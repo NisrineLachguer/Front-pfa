@@ -1,0 +1,59 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Connexion</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          placeholder="Entrez votre nom d'utilisateur"
+          [class.is-invalid]="submitted && f['username'].errors"
+        >
+        @if (submitted && f['username'].errors) {
+          <div class="error-message">
+            @if (f['username'].errors['required']) {
+              <div>Le nom d'utilisateur est requis</div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Entrez votre mot de passe"
+          [class.is-invalid]="submitted && f['password'].errors"
+        >
+        @if (submitted && f['password'].errors) {
+          <div class="error-message">
+            @if (f['password'].errors['required']) {
+              <div>Le mot de passe est requis</div>
+            }
+          </div>
+        }
+      </div>
+
+      <button type="submit" class="login-btn" [disabled]="loading">
+        @if (!loading) {
+          <span>Se connecter</span>
+        }
+        @if (loading) {
+          <span>Connexion en cours...</span>
+        }
+      </button>
+
+      @if (error) {
+        <div class="alert alert-danger">{{error}}</div>
+      }
+    </form>
+
+    <div class="register-link">
+      Pas encore de compte ? <a routerLink="/register">S'inscrire</a>
+    </div>
+  </div>
+</div>
