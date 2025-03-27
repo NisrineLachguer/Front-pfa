@@ -1,20 +1,25 @@
 <div class="login-container">
   <div class="login-card">
-    <h2>Connexion</h2>
+    <h1>Connexion à votre compte</h1>
+    <p class="subtitle">Veuillez saisir vos identifiants</p>
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="username">Nom d'utilisateur</label>
+        <label for="email">Email</label>
         <input
-          type="text"
-          id="username"
-          formControlName="username"
-          placeholder="Entrez votre nom d'utilisateur"
-          [class.is-invalid]="submitted && f['username'].errors"
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Votre email"
+          [class.is-invalid]="submitted && f['email'].errors"
         >
-        @if (submitted && f['username'].errors) {
+        @if (submitted && f['email'].errors) {
           <div class="error-message">
-            @if (f['username'].errors['required']) {
-              <div>Le nom d'utilisateur est requis</div>
+            @if (f['email'].errors['required']) {
+              <div>Email requis</div>
+            }
+            @if (f['email'].errors['email']) {
+              <div>Format d'email invalide</div>
             }
           </div>
         }
@@ -22,38 +27,68 @@
 
       <div class="form-group">
         <label for="password">Mot de passe</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          placeholder="Entrez votre mot de passe"
-          [class.is-invalid]="submitted && f['password'].errors"
-        >
+        <div class="password-container">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="Votre mot de passe"
+            [class.is-invalid]="submitted && f['password'].errors"
+          >
+          <span class="toggle-password" (click)="togglePasswordVisibility()">
+            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+          </span>
+        </div>
         @if (submitted && f['password'].errors) {
           <div class="error-message">
             @if (f['password'].errors['required']) {
-              <div>Le mot de passe est requis</div>
+              <div>Mot de passe requis</div>
+            }
+            @if (f['password'].errors['minlength']) {
+              <div>Minimum 6 caractères</div>
             }
           </div>
         }
       </div>
 
       <button type="submit" class="login-btn" [disabled]="loading">
+        @if (loading) {
+          <span class="btn-loader"></span>
+          <span>Connexion en cours...</span>
+        }
         @if (!loading) {
           <span>Se connecter</span>
         }
-        @if (loading) {
-          <span>Connexion en cours...</span>
-        }
       </button>
 
-      @if (error) {
-        <div class="alert alert-danger">{{error}}</div>
+      @if (showErrorAlert) {
+        <div class="error-alert">
+          <div class="alert-content">
+            <span class="alert-icon">!</span>
+            <span class="alert-message">{{ error }}</span>
+          </div>
+          <div class="progress-bar" [style.animation]="'progress 5s linear'"></div>
+        </div>
       }
-    </form>
 
-    <div class="register-link">
-      Pas encore de compte ? <a routerLink="/register">S'inscrire</a>
-    </div>
+      <div class="divider">
+        <span>OU</span>
+      </div>
+
+      <div class="social-login">
+        <button type="button" class="social-btn google">
+          <img src="./assets/google-icon.png" alt="Google">
+          Continuer avec Google
+        </button>
+        <button type="button" class="social-btn microsoft">
+          <img src="./assets/microsoft-icon.png" alt="Microsoft">
+          Confirmer avec Microsoft
+        </button>
+      </div>
+
+      <div class="register-link">
+        Pas encore de compte ? <a routerLink="/register">S'inscrire</a>
+      </div>
+    </form>
   </div>
 </div>

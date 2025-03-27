@@ -1,1 +1,44 @@
-<p>admin works!</p>
+<div class="dashboard-container">
+  <header class="header">
+    <h1>Admin Dashboard</h1>
+    <button class="logout-btn" (click)="logout()">Déconnexion</button>
+  </header>
+
+  <div class="content">
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li class="active">Profil</li>
+          <li>Utilisateurs</li>
+          <li>Paramètres</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="profile-section">
+        <h2>Mon Profil Administrateur</h2>
+
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="avatar">A</div>
+            <h3>{{ adminProfile.name }}</h3>
+            <span class="role-badge">{{ adminProfile.role }}</span>
+          </div>
+
+          <div class="profile-details">
+            <div class="detail-item">
+              <span class="label">Email:</span>
+              <span class="value">{{ adminProfile.email }}</span>
+            </div>
+
+            <div class="detail-item">
+              <span class="label">Dernière connexion:</span>
+              <span class="value">{{ adminProfile.lastLogin }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>

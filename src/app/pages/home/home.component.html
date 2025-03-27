@@ -1,0 +1,26 @@
+<!-- home.component.html -->
+<div class="home-container">
+  <header class="hero">
+    <div class="hero-content">
+      <h1>WorkSpot
+        <br>L'emploi de vos rêves en un clic</h1>
+      <p>Trouvez l’emploi idéal ou recrutez les meilleurs talents en quelques clics. Votre carrière commence ici !.</p>
+      <div class="cta-buttons">
+        <button class="primary-btn" routerLink="/register" >Trouver un emploi</button>
+        <button class="secondary-btn" routerLink="/register">Poster un offre</button>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="./assets/logo-cv.jpg" alt="Expense Management">
+    </div>
+  </header>
+
+  <section class="features">
+    <div class="feature-grid">
+      <app-feature-section
+        *ngFor="let feature of features"
+        [feature]="feature">
+      </app-feature-section>
+    </div>
+  </section>
+</div>

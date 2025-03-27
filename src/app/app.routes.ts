@@ -2,18 +2,16 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LandingComponent } from './landing/landing.component';
-import { ContactComponent } from './contact/contact.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { RecruiterComponent } from './pages/recruiter/recruiter.component';
 import { CandidateComponent } from './pages/candidate/candidate.component';
 import { authGuard } from './core/auth.guard';
+import {HomeComponent} from './pages/home/home.component';
+import {ContactComponent} from './pages/contact/contact.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: LandingComponent,
-    title: 'Accueil'
-  },
+  { path: '', component: HomeComponent },
+
   {
     path: 'login',
     component: LoginComponent,
@@ -22,13 +20,11 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-    title: 'Inscription'
+    title: 'sign-up '
   },
-  {
-    path: 'contact',
-    component: ContactComponent,
-    title: 'Contact'
-  },
+
+  { path: 'contact', component: ContactComponent },
+
   {
     path: 'admin',
     component: AdminComponent,

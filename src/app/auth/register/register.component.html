@@ -1,1 +1,126 @@
-<p>register works!</p>
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h2>Créez votre compte</h2>
+      <p class="welcome-text">Rejoignez notre communauté professionnelle</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="username" class="input-label">Nom d'utilisateur</label>
+        <input type="text" id="username" formControlName="username" placeholder="Choisissez un nom d'utilisateur"
+               [class.is-invalid]="submitted && f['username'].errors" class="form-input">
+        @if (submitted && f['username'].errors) {
+          <div class="error-message">
+            @if (f['username'].errors['required']) {
+              <div>Le nom d'utilisateur est requis</div>
+            }
+            @if (f['username'].errors['minlength']) {
+              <div>Minimum 3 caractères</div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Role Selection -->
+      <div class="form-group">
+        <label for="role" class="input-label">Je suis</label>
+        <select id="role" formControlName="role" class="form-select"
+                [class.is-invalid]="submitted && f['role'].errors">
+          <option value="" disabled selected>Sélectionnez votre rôle</option>
+          <option value="RECRUITER">Recruteur</option>
+          <option value="CANDIDATE">Candidat</option>
+        </select>
+        @if (submitted && f['role'].errors) {
+          <div class="error-message">
+            @if (f['role'].errors['required']) {
+              <div>Veuillez sélectionner un rôle</div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="input-label">Email professionnel</label>
+        <input type="email" id="email" formControlName="email" placeholder="Entrez votre email"
+               [class.is-invalid]="submitted && f['email'].errors" class="form-input">
+        @if (submitted && f['email'].errors) {
+          <div class="error-message">
+            @if (f['email'].errors['required']) {
+              <div>L'email est requis</div>
+            }
+            @if (f['email'].errors['email']) {
+              <div>Format d'email invalide</div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="input-label">Mot de passe</label>
+        <div class="password-container">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+                 placeholder="Créez un mot de passe" [class.is-invalid]="submitted && f['password'].errors"
+                 class="form-input">
+          <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+            <span class="eye-icon">{{ showPassword ? '👁️' : '👁️‍🗨️' }}</span>
+          </button>
+        </div>
+        @if (submitted && f['password'].errors) {
+          <div class="error-message">
+            @if (f['password'].errors['required']) {
+              <div>Le mot de passe est requis</div>
+            }
+            @if (f['password'].errors['minlength']) {
+              <div>Minimum 6 caractères</div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label for="confirmPassword" class="input-label">Confirmation</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword"
+               placeholder="Confirmez votre mot de passe" [class.is-invalid]="submitted && f['confirmPassword'].errors"
+               class="form-input">
+        @if (submitted && f['confirmPassword'].errors) {
+          <div class="error-message">
+            @if (f['confirmPassword'].errors['required']) {
+              <div>La confirmation est requise</div>
+            }
+          </div>
+        }
+        @if (registerForm.errors?.['mismatch'] && (f['confirmPassword'].dirty || f['confirmPassword'].touched || submitted)) {
+          <div class="error-message">Les mots de passe ne correspondent pas</div>
+        }
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="register-btn" [disabled]="loading">
+        @if (!loading) {
+          <span>Créer mon compte</span>
+        }
+        @if (loading) {
+          <span class="loading-spinner"></span>
+          <span>Création en cours...</span>
+        }
+      </button>
+
+      <!-- Error Message -->
+      @if (error) {
+        <div class="alert alert-danger fade-out">
+          {{error}}
+        </div>
+      }
+    </form>
+
+    <div class="login-link">
+      Déjà membre ?
+       <a routerLink="/login" class="login-text">Connectez-vous</a>
+    </div>
+  </div>
+</div>
