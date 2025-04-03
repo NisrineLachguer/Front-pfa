@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {FeatureSectionComponent} from "../../shared/components/feature-section/feature-section.component";
-import {RouterLink} from '@angular/router';
+import {RouterLink, RouterLinkActive} from '@angular/router';
+import {AuthService} from '../../auth/auth.service';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FeatureSectionComponent, RouterLink],
+  imports: [CommonModule, FeatureSectionComponent, RouterLink, RouterLinkActive],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -34,5 +35,11 @@ export class HomeComponent {
       description: 'Coverage that suits your budget and needs in just a few clicks'
     }
   ];
+
+  isMobileMenuOpen = false;
+  constructor(public authService: AuthService) {}
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
 }
 

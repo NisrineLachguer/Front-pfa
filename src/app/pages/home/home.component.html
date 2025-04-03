@@ -1,4 +1,23 @@
-<!-- home.component.html -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="logo">
+      <a routerLink="/">
+        <h1>WorkSpot</h1>
+      </a>
+    </div>
+    <div class="menu-toggle" (click)="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul class="nav-links" [class.active]="isMobileMenuOpen">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Accueil</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+      <li><a routerLink="/login" routerLinkActive="active" class="signin-btn">Connexion</a></li>
+    </ul>
+  </div>
+</nav>
+
 <div class="home-container">
   <header class="hero">
     <div class="hero-content">

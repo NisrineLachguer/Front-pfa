@@ -86,6 +86,12 @@ export class AuthService {
     return !!this.getToken();
   }
 
+  isAuthenticatedAndHasRole(): boolean {
+    const user = this.getCurrentUser();
+    // @ts-ignore
+    return <boolean><unknown>user && (user.role === 'ADMIN' || user.role === 'RECRUITER' || user.role === 'CANDIDATE');
+  }
+
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }

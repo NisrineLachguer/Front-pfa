@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <nav class="navbar">
+    <nav *ngIf="!authService.isAuthenticatedAndHasRole()" class="navbar">
       <div class="navbar-container">
         <div class="logo">
           <a routerLink="/">
@@ -158,7 +159,7 @@ import { RouterModule } from '@angular/router';
 })
 export class NavbarComponent {
   isMobileMenuOpen = false;
-
+  constructor(public authService: AuthService) {}
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }

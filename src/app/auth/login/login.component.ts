@@ -4,18 +4,25 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { finalize, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {CommonModule} from '@angular/common';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    RouterModule
+    CommonModule,         // <-- Add this first
+    ReactiveFormsModule,  // <-- Then other Angular modules
+    RouterModule,
+    FontAwesomeModule
+
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+
   loginForm: FormGroup;
   loading = false;
   submitted = false;

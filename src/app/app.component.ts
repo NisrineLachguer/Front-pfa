@@ -9,7 +9,7 @@ import {NavbarComponent} from "./pages/navbar/navbar.component";
   imports: [RouterOutlet, NavbarComponent],
   template: `
     <app-navbar></app-navbar>
-    <div style="margin-top: 80px;">
+    <div>
       <router-outlet></router-outlet>
     </div>
   `

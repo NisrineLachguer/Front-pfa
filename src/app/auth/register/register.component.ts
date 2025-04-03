@@ -11,6 +11,7 @@ import {MustMatch} from './must-match.validator';
     ReactiveFormsModule,
     RouterLink,
 
+
   ],
   styleUrls: ['./register.component.css']
 })
