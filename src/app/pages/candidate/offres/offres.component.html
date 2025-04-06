@@ -1,0 +1,121 @@
+<!-- offres.component.html -->
+<div class="offres-container">
+  <div class="offres-header">
+    <h1>Offres d'emploi disponibles</h1>
+    <div class="search-bar">
+      <input type="text" placeholder="Rechercher des offres..." class="search-input">
+      <button class="search-button">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="filter-item">
+      <select class="filter-select">
+        <option value="">Toutes les villes</option>
+        <option value="Casablanca">Casablanca</option>
+        <option value="Rabat">Rabat</option>
+        <option value="Marrakech">Marrakech</option>
+      </select>
+    </div>
+    <div class="filter-item">
+      <select class="filter-select">
+        <option value="">Tous les secteurs</option>
+        <option value="IT">IT & Développement</option>
+        <option value="Data">Data Science</option>
+        <option value="Marketing">Marketing</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="offres-grid">
+    <div *ngFor="let offre of offres" class="offre-card">
+      <div class="card-header">
+        <h2 class="job-title">{{ offre.title }}</h2>
+        <span class="company-name">{{ offre.company }}</span>
+      </div>
+      <div class="card-body">
+        <p class="job-description">{{ offre.description }}</p>
+        <div class="job-location">
+          <i class="fas fa-map-marker-alt location-icon"></i>
+          <span>{{ offre.location }}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="apply-button" (click)="openApplyModal(offre)">Postuler</button>
+        <button class="save-button">
+          <i class="far fa-bookmark"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simuler plus d'offres à partir des données existantes -->
+  <div class="offres-grid">
+    <div *ngFor="let offre of offres" class="offre-card">
+      <div class="card-header">
+        <h2 class="job-title">Senior {{ offre.title }}</h2>
+        <span class="company-name">{{ offre.company }} International</span>
+      </div>
+      <div class="card-body">
+        <p class="job-description">Position senior pour {{ offre.description }}</p>
+        <div class="job-location">
+          <i class="fas fa-map-marker-alt location-icon"></i>
+          <span>{{ offre.location === 'Casablanca' ? 'Marrakech' : 'Casablanca' }}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="apply-button" (click)="openApplyModal(offre)">Postuler</button>
+        <button class="save-button">
+          <i class="far fa-bookmark"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button class="pagination-button active">1</button>
+    <button class="pagination-button">2</button>
+    <button class="pagination-button">3</button>
+    <button class="pagination-button next">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- Modal de candidature -->
+  <div class="apply-modal" [class.modal-visible]="showApplyModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Comment souhaitez-vous postuler ?</h3>
+        <button class="close-button" (click)="closeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="apply-options">
+          <div class="apply-option" (click)="selectApplyMethod('form')">
+            <div class="option-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="option-text">
+              <h4>Remplir le formulaire</h4>
+              <p>Complétez un formulaire en ligne avec vos informations</p>
+            </div>
+          </div>
+          <div class="apply-option" (click)="selectApplyMethod('upload')">
+            <div class="option-icon">
+              <i class="fas fa-upload"></i>
+            </div>
+            <div class="option-text">
+              <h4>Uploader votre CV</h4>
+              <p>Téléchargez directement votre CV</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

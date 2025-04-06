@@ -1,0 +1,45 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="logo">
+      <a routerLink="/">
+        <h1>WorkSpot</h1>
+      </a>
+    </div>
+    <div class="menu-toggle" (click)="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul class="nav-links" [class.active]="isMobileMenuOpen">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Accueil</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+      <li><a routerLink="/login" routerLinkActive="active" class="signin-btn">Connexion</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="home-container">
+  <header class="hero">
+    <div class="hero-content">
+      <h1>WorkSpot
+        <br>L'emploi de vos rêves en un clic</h1>
+      <p>Trouvez l’emploi idéal ou recrutez les meilleurs talents en quelques clics. Votre carrière commence ici !.</p>
+      <div class="cta-buttons">
+        <button class="primary-btn" routerLink="/register" >Trouver un emploi</button>
+        <button class="secondary-btn" routerLink="/register">Poster un offre</button>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="./assets/logo-cv.jpg" alt="Expense Management">
+    </div>
+  </header>
+
+  <section class="features">
+    <div class="feature-grid">
+      <app-feature-section
+        *ngFor="let feature of features"
+        [feature]="feature">
+      </app-feature-section>
+    </div>
+  </section>
+</div>

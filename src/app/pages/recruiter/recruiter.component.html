@@ -1,1 +1,44 @@
-<p>recruiter works!</p>
+<div class="dashboard-container">
+  <header class="header">
+    <h1>Recruiter Dashboard</h1>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </header>
+
+  <div class="content">
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li class="active">Profile</li>
+          <li>Job Listings</li>
+          <li>Settings</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="profile-section">
+        <h2>My Recruiter Profile</h2>
+
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="avatar">R</div>
+            <h3>{{ recruiterProfile.name }}</h3>
+            <span class="role-badge">{{ recruiterProfile.role }}</span>
+          </div>
+
+          <div class="profile-details">
+            <div class="detail-item">
+              <span class="label">Email:</span>
+              <span class="value">{{ recruiterProfile.email }}</span>
+            </div>
+
+            <div class="detail-item">
+              <span class="label">Last Login:</span>
+              <span class="value">{{ recruiterProfile.lastLogin }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>

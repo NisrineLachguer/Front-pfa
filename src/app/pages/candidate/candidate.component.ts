@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-candidate',
-  imports: [],
   templateUrl: './candidate.component.html',
-  styleUrl: './candidate.component.css'
+  standalone: true,
+  imports: [
+    RouterOutlet
+  ],
+  styleUrls: ['./candidate.component.css']
 })
 export class CandidateComponent {
+
+  constructor(private router: Router) {}
 
 }

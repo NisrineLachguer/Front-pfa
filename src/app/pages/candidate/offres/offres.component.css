@@ -1,0 +1,383 @@
+/* offres.component.css */
+.offres-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.offres-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.offres-header h1 {
+  color: #333;
+  font-size: 28px;
+  margin: 0;
+}
+
+.search-bar {
+  display: flex;
+  max-width: 400px;
+  width: 100%;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 25px 0 0 25px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #6151b8;
+}
+
+.search-button {
+  background: linear-gradient(90deg, #6151b8 0%, #8c42c8 100%);
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: 0 25px 25px 0;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.search-button:hover {
+  background: linear-gradient(90deg, #7262c9 0%, #9d53d9 100%);
+}
+
+.filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  flex: 1;
+  min-width: 150px;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: white;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s;
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  border-color: #6151b8;
+}
+
+.offres-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.offre-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eaeaea;
+}
+
+.offre-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(108, 99, 255, 0.15);
+}
+
+.card-header {
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #f9f9ff;
+}
+
+.job-title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.company-name {
+  display: block;
+  color: #6151b8;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.card-body {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.job-description {
+  color: #666;
+  margin: 0 0 15px 0;
+  line-height: 1.5;
+}
+
+.job-location {
+  display: flex;
+  align-items: center;
+  color: #888;
+  font-size: 14px;
+}
+
+.location-icon {
+  color: #6151b8;
+  margin-right: 8px;
+}
+
+.card-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.apply-button {
+  background: linear-gradient(90deg, #2b68a7 0%, #6151b8 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.apply-button:hover {
+  background: linear-gradient(90deg, #3579b8 0%, #7262c9 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(108, 99, 255, 0.2);
+}
+
+.save-button {
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.save-button:hover {
+  background-color: #eaeaea;
+}
+
+.save-button i {
+  color: #888;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.save-button:hover i {
+  color: #6151b8;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.pagination-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid #ddd;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pagination-button:hover {
+  border-color: #6151b8;
+  color: #6151b8;
+}
+
+.pagination-button.active {
+  background: linear-gradient(90deg, #2b68a7 0%, #6151b8 100%);
+  color: white;
+  border: none;
+}
+
+.pagination-button.next {
+  background-color: #f5f5f5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .offres-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .search-bar {
+    max-width: 100%;
+  }
+
+  .offres-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .filters {
+    flex-direction: column;
+  }
+
+  .filter-item {
+    width: 100%;
+  }
+
+  .offres-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Modal de candidature */
+.apply-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-visible .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9ff;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close-button:hover {
+  color: #6151b8;
+}
+
+.modal-body {
+  padding: 25px;
+}
+
+.apply-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.apply-option {
+  display: flex;
+  padding: 15px;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.apply-option:hover {
+  border-color: #6151b8;
+  background-color: #f9f9ff;
+  transform: translateY(-2px);
+}
+
+.option-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(90deg, #6151b8 0%, #8c42c8 100%);
+  border-radius: 50%;
+  margin-right: 15px;
+  color: white;
+  font-size: 20px;
+}
+
+.option-text h4 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.option-text p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}

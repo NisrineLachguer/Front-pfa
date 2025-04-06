@@ -1,26 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { CommonModule } from '@angular/common';
+import { finalize, timer } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import {CommonModule} from '@angular/common';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
+    CommonModule,         // <-- Add this first
+    ReactiveFormsModule,  // <-- Then other Angular modules
     RouterModule,
+    FontAwesomeModule
+
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+
   loginForm: FormGroup;
   loading = false;
   submitted = false;
   error = '';
   showPassword = false;
+  showErrorAlert = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,15 +36,9 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
-  }
-
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      this.redirectBasedOnRole();
-    }
   }
 
   get f() { return this.loginForm.controls; }
@@ -45,9 +47,16 @@ export class LoginComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
+  private showError(message: string): void {
+    this.error = message;
+    this.showErrorAlert = true;
+    timer(5000).subscribe(() => this.showErrorAlert = false);
+  }
+
   onSubmit(): void {
     this.submitted = true;
     this.error = '';
+    this.showErrorAlert = false;
 
     if (this.loginForm.invalid) {
       return;
@@ -56,49 +65,38 @@ export class LoginComponent implements OnInit {
     this.loading = true;
 
     this.authService.login({
-      username: this.f['username'].value,
+      email: this.f['email'].value,
       password: this.f['password'].value
-    }).subscribe({
-      next: (response) => {
-        this.loading = false;
-        this.redirectBasedOnRole();
-      },
-      error: (error) => {
-        this.loading = false;
-        this.handleLoginError(error);
-      }
+    }).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe({
+      next: () => this.redirectBasedOnRole(),
+      error: (error) => this.handleLoginError(error)
     });
   }
 
   private redirectBasedOnRole(): void {
     const user = this.authService.getCurrentUser();
     if (!user) {
-      this.error = 'Erreur lors de la récupération des informations utilisateur';
+      this.showError('Erreur de récupération du profil');
       return;
     }
 
     switch(user.role) {
-      case 'ADMIN':
-        this.router.navigate(['/admin/dashboard']);
-        break;
-      case 'RECRUITER':
-        this.router.navigate(['/recruiter/offers']);
-        break;
-      case 'CANDIDATE':
-        this.router.navigate(['/candidate/profile']);
-        break;
-      default:
-        this.router.navigate(['/']);
+      case 'ADMIN': this.router.navigate(['/admin']); break;
+      case 'RECRUITER': this.router.navigate(['/recruiter']); break;
+      case 'CANDIDATE': this.router.navigate(['/candidate/offres']); break;
+      default: this.router.navigate(['/']);
     }
   }
 
   private handleLoginError(error: any): void {
     if (error.status === 401) {
-      this.error = 'Nom d\'utilisateur ou mot de passe incorrect';
+      this.showError('Email ou mot de passe incorrect');
     } else if (error.status === 0) {
-      this.error = 'Impossible de se connecter au serveur. Vérifiez votre connexion internet.';
+      this.showError('Service indisponible');
     } else {
-      this.error = 'Une erreur inattendue est survenue. Veuillez réessayer plus tard.';
+      this.showError('Cet utilisateur n\'existe pas');
     }
   }
 }

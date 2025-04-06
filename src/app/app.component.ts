@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {LandingComponent} from './landing/landing.component';
+import {NavbarComponent} from "./pages/navbar/navbar.component";
+
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  standalone: true,
+  imports: [RouterOutlet, NavbarComponent],
+  template: `
+    <app-navbar></app-navbar>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  `
 })
 export class AppComponent {
-  title = 'pfa-front';
+  title = 'frontend1';
 }

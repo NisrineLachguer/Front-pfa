@@ -1,0 +1,168 @@
+/* candidate.component.css */
+.navbar {
+  background: linear-gradient(90deg, #2b68a7 0%, #6151b8 50%, #8c42c8 100%);
+  box-shadow: 0 4px 20px rgba(108, 99, 255, 0.3);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+  height: 75px; /* Légèrement plus haut pour accommoder un logo plus grand */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 55px; /* Logo plus grand */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s;
+  margin-right: 15px; /* Plus d'espace après le logo */
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-items {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-item {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-icon, .logout-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 18px;
+  transition: all 0.3s;
+}
+
+.profile-icon:hover, .logout-icon:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.logout-icon {
+  background-color: rgba(255, 75, 75, 0.2);
+}
+
+.logout-icon:hover {
+  background-color: rgba(255, 75, 75, 0.3);
+}
+
+.content {
+  margin-top: 90px; /* Ajusté pour la navbar plus haute */
+  padding: 20px;
+}
+
+/* Animation d'entrée pour la navbar */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar {
+  animation: fadeInDown 0.5s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0 15px;
+  }
+
+  .logo {
+    height: 48px; /* Légèrement plus petit sur tablette, mais toujours grand */
+  }
+
+  .nav-items {
+    gap: 15px;
+  }
+
+  .nav-item {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .profile-icon, .logout-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo {
+    height: 44px; /* Plus petit sur mobile mais toujours visible */
+  }
+
+  .nav-items {
+    gap: 8px;
+  }
+
+  .nav-item {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+
+  .navbar-actions {
+    gap: 10px;
+  }
+
+  .profile-icon, .logout-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+}
