@@ -1,9 +1,9 @@
-<!-- offres.component.html -->
 <div class="offres-container">
   <div class="offres-header">
     <h1>Offres d'emploi disponibles</h1>
     <div class="search-bar">
-      <input type="text" placeholder="Rechercher des offres..." class="search-input">
+      <input type="text" [(ngModel)]="searchTerm" (input)="filterOffres()"
+             placeholder="Rechercher des offres..." class="search-input">
       <button class="search-button">
         <i class="fas fa-search"></i>
       </button>
@@ -12,34 +12,55 @@
 
   <div class="filters">
     <div class="filter-item">
-      <select class="filter-select">
+      <select class="filter-select" [(ngModel)]="selectedLocation" (change)="filterOffres()">
         <option value="">Toutes les villes</option>
-        <option value="Casablanca">Casablanca</option>
-        <option value="Rabat">Rabat</option>
-        <option value="Marrakech">Marrakech</option>
+        <option *ngFor="let location of getUniqueLocations()" [value]="location">
+          {{ location }}
+        </option>
       </select>
     </div>
     <div class="filter-item">
-      <select class="filter-select">
+      <select class="filter-select" [(ngModel)]="selectedSector" (change)="filterOffres()">
         <option value="">Tous les secteurs</option>
-        <option value="IT">IT & Développement</option>
-        <option value="Data">Data Science</option>
-        <option value="Marketing">Marketing</option>
+        <option *ngFor="let sector of getUniqueSectors()" [value]="sector">
+          {{ sector }}
+        </option>
       </select>
     </div>
   </div>
 
-  <div class="offres-grid">
-    <div *ngFor="let offre of offres" class="offre-card">
+  <div *ngIf="isLoading" class="loading-spinner">
+    <i class="fas fa-spinner fa-spin"></i> Chargement des offres...
+  </div>
+
+  <div *ngIf="!isLoading" class="offres-grid">
+    <div *ngFor="let offre of filteredOffres" class="offre-card">
       <div class="card-header">
-        <h2 class="job-title">{{ offre.title }}</h2>
-        <span class="company-name">{{ offre.company }}</span>
+        <h2 class="job-title">{{ offre.posteTitre }}</h2>
+        <span class="status-badge {{ getStatusClass(offre.status) }}">
+          {{ getStatusLabel(offre.status) }}
+        </span>
+        <span class="company-name">{{ offre.nomEntreprise }}</span>
       </div>
       <div class="card-body">
-        <p class="job-description">{{ offre.description }}</p>
-        <div class="job-location">
-          <i class="fas fa-map-marker-alt location-icon"></i>
-          <span>{{ offre.location }}</span>
+        <p class="job-description">{{ offre.description | truncate:150 }}</p>
+        <div class="job-info">
+          <div class="job-stat">
+            <i class="fas fa-building stat-icon"></i>
+            <span>{{ offre.secteurActivite }}</span>
+          </div>
+          <div class="job-stat">
+            <i class="fas fa-map-marker-alt stat-icon"></i>
+            <span>{{ offre.localisation }}</span>
+          </div>
+          <div class="job-stat">
+            <i class="fas fa-briefcase stat-icon"></i>
+            <span>{{ offre.typeOffre }} {{ offre.dureeMois ? '(' + offre.dureeMois + ' mois)' : '' }}</span>
+          </div>
+          <div class="job-stat">
+            <i class="far fa-calendar-alt stat-icon"></i>
+            <span>Publiée le {{ offre.datePublication | date:'dd/MM/yyyy' }}</span>
+          </div>
         </div>
       </div>
       <div class="card-footer">
@@ -49,73 +70,36 @@
         </button>
       </div>
     </div>
-  </div>
 
-  <!-- Simuler plus d'offres à partir des données existantes -->
-  <div class="offres-grid">
-    <div *ngFor="let offre of offres" class="offre-card">
-      <div class="card-header">
-        <h2 class="job-title">Senior {{ offre.title }}</h2>
-        <span class="company-name">{{ offre.company }} International</span>
+    <ng-container *ngIf="filteredOffres.length === 0 && !isLoading">
+      <div class="no-results">
+        <p>Aucune offre ne correspond à vos critères de recherche.</p>
       </div>
-      <div class="card-body">
-        <p class="job-description">Position senior pour {{ offre.description }}</p>
-        <div class="job-location">
-          <i class="fas fa-map-marker-alt location-icon"></i>
-          <span>{{ offre.location === 'Casablanca' ? 'Marrakech' : 'Casablanca' }}</span>
-        </div>
-      </div>
-      <div class="card-footer">
-        <button class="apply-button" (click)="openApplyModal(offre)">Postuler</button>
-        <button class="save-button">
-          <i class="far fa-bookmark"></i>
-        </button>
-      </div>
+    </ng-container>
+  </div>
+</div>
+
+<!-- Modal de candidature -->
+<div class="apply-modal" [class.modal-visible]="showApplyModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Postuler à "{{currentOffre?.posteTitre}}"</h3>
+      <button class="close-button" (click)="closeApplyModal()">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-  </div>
-
-  <div class="pagination">
-    <button class="pagination-button active">1</button>
-    <button class="pagination-button">2</button>
-    <button class="pagination-button">3</button>
-    <button class="pagination-button next">
-      <i class="fas fa-chevron-right"></i>
-    </button>
-  </div>
-
-  <!-- Modal de candidature -->
-  <div class="apply-modal" [class.modal-visible]="showApplyModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Comment souhaitez-vous postuler ?</h3>
-        <button class="close-button" (click)="closeModal()">
-          <i class="fas fa-times"></i>
-        </button>
+    <div class="modal-body">
+      <div *ngIf="isLoading" class="loading-spinner">
+        <p>Envoi en cours...</p>
       </div>
-      <div class="modal-body">
-        <div class="apply-options">
-          <div class="apply-option" (click)="selectApplyMethod('form')">
-            <div class="option-icon">
-              <i class="fas fa-file-alt"></i>
-            </div>
-            <div class="option-text">
-              <h4>Remplir le formulaire</h4>
-              <p>Complétez un formulaire en ligne avec vos informations</p>
-            </div>
-          </div>
-          <div class="apply-option" (click)="selectApplyMethod('upload')">
-            <div class="option-icon">
-              <i class="fas fa-upload"></i>
-            </div>
-            <div class="option-text">
-              <h4>Uploader votre CV</h4>
-              <p>Téléchargez directement votre CV</p>
-            </div>
-          </div>
+      <div *ngIf="!isLoading">
+        <div class="form-buttons">
+          <button type="button" class="secondary-button" (click)="closeApplyModal()">Annuler</button>
+          <button type="button" class="primary-button" (click)="submitApplication()">
+            Confirmer la candidature
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-

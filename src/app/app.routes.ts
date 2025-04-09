@@ -11,6 +11,10 @@ import {ContactComponent} from './pages/contact/contact.component';
 import {OffresComponent} from './pages/candidate/offres/offres.component';
 import {CandidaturesComponent} from './pages/candidate/candidatures/candidatures.component';
 import {ProfilComponent} from './pages/candidate/profil/profil.component';
+import {OffresRecruteurComponent} from './pages/recruiter/offres-recruteur/offres-recruteur.component';
+//import {OffresListComponent} from './pages/recruiter/offres-list/offres-list.component';
+import {CreateOffreComponent} from './pages/recruiter/create-offre/create-offre.component';
+import {OffresListComponent} from './pages/recruiter/offres-list/offres-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -40,7 +44,11 @@ export const routes: Routes = [
     component: RecruiterComponent,
     title: 'Recruteur',
     canActivate: [authGuard],
-    data: { role: 'RECRUITER' }
+    data: { role: 'RECRUITER' },
+    children: [
+      { path: 'offres', component: OffresListComponent },
+      { path: 'offres/nouvelle', component: CreateOffreComponent }
+    ]
   },
   {
     path: 'candidate',

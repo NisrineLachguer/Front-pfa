@@ -1,44 +1,29 @@
-<div class="dashboard-container">
-  <header class="header">
-    <h1>Recruiter Dashboard</h1>
-    <button class="logout-btn" (click)="logout()">Logout</button>
-  </header>
+<!-- recruiter.component.html -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <img src="assets/logo.png" alt="CV Logo" class="logo">
+    </div>
 
-  <div class="content">
-    <aside class="sidebar">
-      <nav>
-        <ul>
-          <li class="active">Profile</li>
-          <li>Job Listings</li>
-          <li>Settings</li>
-        </ul>
-      </nav>
-    </aside>
+    <div class="navbar-menu">
+      <div class="nav-items">
+        <a href="/recruiter/offres" class="nav-item">Mes Offres</a>
+        <a href="/recruiter/candidatures" class="nav-item">Candidatures Reçues</a>
+        <a href="/recruiter/stats" class="nav-item">Statistiques</a>
+      </div>
 
-    <main class="main-content">
-      <section class="profile-section">
-        <h2>My Recruiter Profile</h2>
-
-        <div class="profile-card">
-          <div class="profile-header">
-            <div class="avatar">R</div>
-            <h3>{{ recruiterProfile.name }}</h3>
-            <span class="role-badge">{{ recruiterProfile.role }}</span>
-          </div>
-
-          <div class="profile-details">
-            <div class="detail-item">
-              <span class="label">Email:</span>
-              <span class="value">{{ recruiterProfile.email }}</span>
-            </div>
-
-            <div class="detail-item">
-              <span class="label">Last Login:</span>
-              <span class="value">{{ recruiterProfile.lastLogin }}</span>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+      <div class="navbar-actions">
+        <a href="/recruiter/profil" class="profile-icon" title="Profil">
+          <i class="fas fa-user-circle"></i>
+        </a>
+        <a href="/logout" class="logout-icon" title="Déconnexion">
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+      </div>
+    </div>
   </div>
+</nav>
+
+<div class="content">
+  <router-outlet></router-outlet>
 </div>

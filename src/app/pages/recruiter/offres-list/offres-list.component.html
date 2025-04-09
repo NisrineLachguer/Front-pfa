@@ -1,0 +1,51 @@
+<div class="offres-container">
+  <div class="header">
+    <h2>Mes Offres</h2>
+    <button (click)="openCreateModal()" class="btn-add">
+      <i class="fas fa-plus"></i> Ajouter une offre
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <i class="fas fa-spinner fa-spin"></i> Chargement des offres...
+  </div>
+
+  <div *ngIf="!isLoading" class="offres-grid">
+    <div *ngFor="let offre of offres" class="offre-card">
+      <div class="card-header">
+        <h3>{{ offre.posteTitre }}</h3>
+        <span class="status-badge {{ getStatusClass(offre.status) }}">
+          {{ getStatusLabel(offre.status) }}
+        </span>
+      </div>
+      <div class="card-body">
+        <p class="entreprise">{{ offre.nomEntreprise }}</p>
+        <p class="localisation">
+          <i class="fas fa-map-marker-alt"></i> {{ offre.localisation }}
+        </p>
+        <p class="description">{{ offre.description | truncate:150 }}</p>
+        <p class="date">
+          <i class="far fa-calendar-alt"></i>
+          Publiée le {{ offre.datePublication | date:'dd/MM/yyyy' }}
+        </p>
+      </div>
+      <div class="card-actions">
+        <button (click)="viewApplications(offre.id)" class="btn-action">
+          <i class="fas fa-users"></i> Candidatures
+        </button>
+        <button (click)="editOffre(offre.id)" class="btn-action">
+          <i class="fas fa-edit"></i> Modifier
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="offres.length === 0" class="no-offres">
+      <p>Aucune offre disponible pour le moment.</p>
+      <button (click)="openCreateModal()" class="btn-add">
+        <i class="fas fa-plus"></i> Créer une offre
+      </button>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
