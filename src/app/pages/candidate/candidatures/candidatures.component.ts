@@ -218,4 +218,6 @@ export class CandidaturesComponent implements OnInit {
     this.candidatures = this.candidatures.filter(c => c.id !== id);
     this.applyFilters();
   }
+
+
 }

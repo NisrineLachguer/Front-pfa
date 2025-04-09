@@ -84,21 +84,30 @@
 <div class="apply-modal" [class.modal-visible]="showApplyModal">
   <div class="modal-content">
     <div class="modal-header">
-      <h3>Postuler à "{{currentOffre?.posteTitre}}"</h3>
-      <button class="close-button" (click)="closeApplyModal()">
+      <h3>Comment souhaitez-vous postuler ?</h3>
+      <button class="close-button" (click)="closeModal()">
         <i class="fas fa-times"></i>
       </button>
     </div>
     <div class="modal-body">
-      <div *ngIf="isLoading" class="loading-spinner">
-        <p>Envoi en cours...</p>
-      </div>
-      <div *ngIf="!isLoading">
-        <div class="form-buttons">
-          <button type="button" class="secondary-button" (click)="closeApplyModal()">Annuler</button>
-          <button type="button" class="primary-button" (click)="submitApplication()">
-            Confirmer la candidature
-          </button>
+      <div class="apply-options">
+        <div class="apply-option" (click)="selectApplyMethod('form')">
+          <div class="option-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="option-text">
+            <h4>Remplir le formulaire</h4>
+            <p>Complétez un formulaire en ligne avec vos informations</p>
+          </div>
+        </div>
+        <div class="apply-option" (click)="selectApplyMethod('upload')">
+          <div class="option-icon">
+            <i class="fas fa-upload"></i>
+          </div>
+          <div class="option-text">
+            <h4>Uploader votre CV</h4>
+            <p>Téléchargez directement votre CV</p>
+          </div>
         </div>
       </div>
     </div>

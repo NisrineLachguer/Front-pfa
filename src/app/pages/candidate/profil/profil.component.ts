@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {UserService} from '../../../core/user/user.service';
 
 @Component({
   selector: 'app-profil',
@@ -14,8 +15,13 @@ export class ProfilComponent implements OnInit {
   isEditing = false;
   saveSuccess = false;
   saveError = false;
+  userId: number | null = null;
+  userData: any = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService
+  ) {
     this.profileForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -25,21 +31,33 @@ export class ProfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Simuler le chargement des données utilisateur depuis un service
-    this.loadUserData();
+    // Obtenir l'ID de l'utilisateur connecté
+    this.userId = this.userService.getCurrentUserId();
+
+    if (this.userId) {
+      this.loadUserData(this.userId);
+    } else {
+      console.error('Aucun utilisateur connecté ou ID utilisateur non disponible');
+    }
   }
 
-  loadUserData(): void {
-    // Simulation de données utilisateur (à remplacer par un appel API réel)
-    const userData = {
-      username: 'JohnDoe',
-      email: 'john.doe@example.com',
-      telephone: '0612345678',
-      adresse: '123 Rue Principale, 75000 Paris'
-    };
-
-    this.profileForm.patchValue(userData);
-    this.profileForm.disable(); // Désactiver le formulaire en mode consultation
+  loadUserData(userId: number): void {
+    this.userService.getCandidateById(userId).subscribe({
+      next: (data) => {
+        this.userData = data;
+        this.profileForm.patchValue({
+          username: data.username,
+          email: data.email,
+          telephone: data.telephone || '',
+          adresse: data.adresse || ''
+        });
+        this.profileForm.disable(); // Désactiver le formulaire en mode consultation
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des données utilisateur:', err);
+        this.saveError = true;
+      }
+    });
   }
 
   toggleEdit(): void {
@@ -59,22 +77,45 @@ export class ProfilComponent implements OnInit {
       return;
     }
 
-    // Simulation de la sauvegarde (à remplacer par un appel API réel)
-    console.log('Données à sauvegarder:', this.profileForm.value);
+    if (!this.userId) {
+      console.error('ID utilisateur non disponible');
+      this.saveError = true;
+      return;
+    }
 
-    // Simuler un délai de traitement
-    setTimeout(() => {
-      // Simuler un succès (dans un cas réel, cela dépendrait de la réponse de l'API)
-      this.saveSuccess = true;
-      this.saveError = false;
-      this.isEditing = false;
-      this.profileForm.disable();
-    }, 1000);
+    // Préparer les données à envoyer
+    const updatedData = {
+      ...this.userData, // Garder les données existantes
+      username: this.profileForm.value.username,
+      email: this.profileForm.value.email,
+      telephone: this.profileForm.value.telephone,
+      adresse: this.profileForm.value.adresse
+    };
+
+    this.userService.updateCandidate(this.userId, updatedData).subscribe({
+      next: (response) => {
+        console.log('Profil mis à jour avec succès:', response);
+        this.saveSuccess = true;
+        this.saveError = false;
+        this.isEditing = false;
+        this.profileForm.disable();
+
+        // Mettre à jour les données locales
+        this.userData = response;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour du profil:', err);
+        this.saveError = true;
+        this.saveSuccess = false;
+      }
+    });
   }
 
   cancel(): void {
-    // Recharger les données originales
-    this.loadUserData();
+    // Recharger les données originales depuis le serveur
+    if (this.userId) {
+      this.loadUserData(this.userId);
+    }
     this.isEditing = false;
     this.saveSuccess = false;
     this.saveError = false;
@@ -92,7 +133,6 @@ export class ProfilComponent implements OnInit {
 
   get usernameFirstLetter(): string {
     const username = this.profileForm.get('username')?.value;
-    return username ? username.charAt(0) : 'U';
+    return username ? username.charAt(0).toUpperCase() : 'U';
   }
-
 }

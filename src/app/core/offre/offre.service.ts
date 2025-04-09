@@ -56,7 +56,7 @@ export class OffreService {
 
   // Dans offre.service.ts
   getOffresForCandidat(): Observable<Offre[]> {
-    return this.http.get<Offre[]>(`${this.apiUrl}/candidat`, {
+    return this.http.get<Offre[]>(`${this.apiUrl}/`, {
       headers: this.getAuthHeaders()
     });
   }
