@@ -381,3 +381,119 @@
   color: #666;
   font-size: 14px;
 }
+/* Modal d'upload du CV */
+.upload-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-visible.upload-modal {
+  opacity: 1;
+  visibility: visible;
+}
+
+.upload-modal-content {
+  background-color: white;
+  border-radius: 12px;
+  width: 80%; /* Plus grand que le modal de choix */
+  max-width: 600px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-visible.upload-modal .upload-modal-content {
+  transform: translateY(0);
+}
+
+.upload-modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9ff;
+}
+
+.upload-modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.close-upload-button {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close-upload-button:hover {
+  color: #6151b8;
+}
+
+.upload-modal-body {
+  padding: 25px;
+}
+
+.upload-form-group {
+  margin-bottom: 20px;
+}
+
+.upload-form-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.upload-file-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #fafafa;
+  margin-bottom: 8px;
+}
+
+.upload-file-info {
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+}
+
+.upload-submit-button {
+  /*background-color: #007bff;*/
+  background: linear-gradient(90deg, #2b68a7 0%, #6151b8 100%);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.upload-submit-button:hover {
+  background-color: #0056b3;
+}
+
+

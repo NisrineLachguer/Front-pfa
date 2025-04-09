@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {Router} from '@angular/router';
 
 interface Offre {
   id: number;
@@ -18,7 +19,7 @@ interface Offre {
   templateUrl: './offres.component.html',
   standalone: true,
   styleUrls: ['./offres.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, ]
 })
 export class OffresComponent implements OnInit {
   offres: Offre[] = [
@@ -86,11 +87,14 @@ export class OffresComponent implements OnInit {
   searchTerm: string = '';
   selectedLocation: string = '';
   selectedSector: string = '';
+  selectedLocalisation: string = '';
 
   showApplyModal: boolean = false;
   currentOffre: Offre | null = null;
 
-  constructor() {}
+  constructor(private router: Router, ) {}
+
+
 
   ngOnInit(): void {
     // Initialiser les offres filtrées avec toutes les offres
@@ -133,14 +137,40 @@ export class OffresComponent implements OnInit {
     this.showApplyModal = false;
     this.currentOffre = null;
   }
+  showUploadModal: boolean = false;
+  selectedFile: File | null = null;
+  selectedMethod: 'form' | 'upload' | null = null;
+  openUploadModal() {
+    this.showUploadModal = true;
+  }
 
+  closeUploadModal() {
+    this.showUploadModal = false;
+    this.selectedFile = null;
+  }
 
+  onFileChange(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+  onSubmit() {
+    if (this.selectedFile) {
+      // Logique pour envoyer le fichier au backend
+      console.log('Fichier sélectionné:', this.selectedFile);
+      // Par exemple, envoi via un service HTTP.
+    }
+  }
   selectApplyMethod(method: 'form' | 'upload'): void {
     console.log(`Méthode de candidature sélectionnée: ${method}`);
     console.log(`Candidature pour le poste: ${this.currentOffre?.title}`);
     // Ici, vous pouvez ajouter la logique pour chaque méthode de candidature
 
+    if (method === 'form') {
+      this.router.navigate(['/formulaire-candidature']);
+    }else if (method === 'upload') {
+      this.showUploadModal = true; // et on ouvre celui de l'upload
+    }
     // Pour l'instant, fermons simplement le modal
-    this.closeModal();
+    //this.closeModal();
+    this.selectedMethod = method;
   }
 }

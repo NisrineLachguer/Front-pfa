@@ -1,0 +1,93 @@
+<div class="form-container">
+  <h2>Formulaire de Candidature (CV Digital)</h2>
+
+  <div *ngIf="submitted && success" class="success-message">
+    <p>✅ Votre candidature a été envoyée avec succès !</p>
+  </div>
+
+  <div *ngIf="submitted && !success" class="error-alert">
+    <p>❌ Une erreur s'est produite lors de l'envoi de votre candidature. Veuillez réessayer.</p>
+  </div>
+
+  <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()">
+    <div class="form-section">
+      <h3>Informations personnelles</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nom">Nom *</label>
+          <input id="nom" formControlName="nom" type="text" placeholder="Votre nom de famille">
+          <div *ngIf="isFieldInvalid('nom')" class="error-message">
+            Le nom est requis
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prenom">Prénom *</label>
+          <input id="prenom" formControlName="prenom" type="text" placeholder="Votre prénom">
+          <div *ngIf="isFieldInvalid('prenom')" class="error-message">
+            Le prénom est requis
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input id="email" formControlName="email" type="email" placeholder="votre.email@exemple.com">
+        <div *ngIf="isFieldInvalid('email')" class="error-message">
+          Veuillez saisir une adresse email valide
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="telephone">Téléphone</label>
+        <input id="telephone" formControlName="telephone" type="tel" placeholder="Ex: 0612345678">
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Formation</h3>
+      <div class="form-group">
+        <label for="formation">Décrivez votre parcours académique</label>
+        <textarea id="formation" formControlName="formation" placeholder="Ex: Master en Informatique, Université Paris Saclay, 2018-2020"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Expérience professionnelle</h3>
+      <div class="form-group">
+        <label for="experience">Décrivez vos expériences professionnelles</label>
+        <textarea id="experience" formControlName="experience" placeholder="Ex: Développeur web chez XYZ, 2020-présent"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Compétences</h3>
+      <div class="form-group">
+        <label for="competences">Listez vos compétences techniques</label>
+        <textarea id="competences" formControlName="competences" placeholder="Ex: Angular, TypeScript, Node.js, SQL"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Informations complémentaires</h3>
+      <div class="form-group">
+        <label for="motivation">Lettre de motivation</label>
+        <textarea id="motivation" formControlName="motivation" placeholder="Expliquez pourquoi vous êtes intéressé(e) par ce poste"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="disponibilite">Disponibilité</label>
+        <input id="disponibilite" formControlName="disponibilite" type="text" placeholder="Ex: Immédiate, Préavis de 2 mois, etc.">
+      </div>
+    </div>
+
+    <div class="form-buttons">
+      <button type="button" class="secondary" (click)="resetForm()">Réinitialiser</button>
+      <button type="submit" [disabled]="applicationForm.invalid || isSubmitting">
+        <span *ngIf="isSubmitting">Envoi en cours...</span>
+        <span *ngIf="!isSubmitting">Envoyer ma candidature</span>
+      </button>
+    </div>
+  </form>
+</div>

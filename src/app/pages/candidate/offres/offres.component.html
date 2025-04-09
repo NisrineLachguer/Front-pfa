@@ -94,7 +94,7 @@
       </div>
       <div class="modal-body">
         <div class="apply-options">
-          <div class="apply-option" (click)="selectApplyMethod('form')">
+          <button class="apply-option" (click)="selectApplyMethod('form')">
             <div class="option-icon">
               <i class="fas fa-file-alt"></i>
             </div>
@@ -102,8 +102,8 @@
               <h4>Remplir le formulaire</h4>
               <p>Complétez un formulaire en ligne avec vos informations</p>
             </div>
-          </div>
-          <div class="apply-option" (click)="selectApplyMethod('upload')">
+          </button>
+          <button class="apply-option" (click)="selectApplyMethod('upload')">
             <div class="option-icon">
               <i class="fas fa-upload"></i>
             </div>
@@ -111,8 +111,31 @@
               <h4>Uploader votre CV</h4>
               <p>Téléchargez directement votre CV</p>
             </div>
+          </button>
+        </div>
+        <!-- Modal Upload CV -->
+        <div class="upload-modal" [class.modal-visible]="showUploadModal">
+          <div class="upload-modal-content">
+            <div class="upload-modal-header">
+              <h3>Uploader votre CV</h3>
+              <button class="close-upload-button" (click)="closeUploadModal()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="upload-modal-body">
+              <form>
+                <div class="upload-form-group">
+                  <label for="cvFile" class="upload-form-label">Choisissez un fichier PDF :</label>
+                  <input type="file" id="cvFile" accept=".pdf" class="upload-file-input" />
+                  <small class="upload-file-info">Veuillez télécharger un fichier au format PDF.</small>
+                </div>
+                <button type="submit" class="upload-submit-button">Envoyer</button>
+              </form>
+            </div>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>

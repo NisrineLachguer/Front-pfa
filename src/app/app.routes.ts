@@ -11,6 +11,8 @@ import {ContactComponent} from './pages/contact/contact.component';
 import {OffresComponent} from './pages/candidate/offres/offres.component';
 import {CandidaturesComponent} from './pages/candidate/candidatures/candidatures.component';
 import {ProfilComponent} from './pages/candidate/profil/profil.component';
+import {ApplicationFormComponent} from './pages/candidate/application-form/application-form.component';
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -60,9 +62,21 @@ export const routes: Routes = [
       {
         path: 'profil', // sous-route pour les offres
         component: ProfilComponent
-      }
+      },
+
     ]
   },
+  {
+    path: 'candidates/apply/test',
+    loadComponent: () =>
+      import('./pages/candidate/application-form/application-form.component')
+        .then(c => c.ApplicationFormComponent)
+  },
+  {
+    path: 'formulaire-candidature',
+    component: ApplicationFormComponent
+  },
+
   {
     path: '**',
     redirectTo: ''
