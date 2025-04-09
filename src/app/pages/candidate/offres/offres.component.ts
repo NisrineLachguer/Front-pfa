@@ -122,38 +122,25 @@ export class OffresComponent implements OnInit {
     return Array.from(sectors);
   }
 
+// Ajoutez ces méthodes à votre classe OffresComponent
   openApplyModal(offre: Offre): void {
     this.currentOffre = offre;
     this.showApplyModal = true;
   }
 
-  closeApplyModal(): void {
+  closeModal(): void {
     this.showApplyModal = false;
     this.currentOffre = null;
   }
 
-  submitApplication(): void {
-    if (!this.currentOffre) return;
+  selectApplyMethod(method: 'form' | 'upload'): void {
+    console.log(`Méthode de candidature sélectionnée: ${method}`);
+    console.log(`Candidature pour le poste: ${this.currentOffre?.posteTitre}`);
+    // Ici, vous pouvez ajouter la logique pour chaque méthode de candidature
 
-    this.isLoading = true;
-    this.http.post(`/api/v1/candidatures`, {
-      offreId: this.currentOffre.id,
-      status: 'PENDING'
-    }).subscribe({
-      next: () => {
-        this.snackBar.open('Candidature envoyée avec succès', 'Fermer', {
-          duration: 3000
-        });
-        this.closeApplyModal();
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Erreur lors de la candidature', err);
-        this.snackBar.open('Erreur lors de la candidature', 'Fermer', {
-          duration: 3000
-        });
-        this.isLoading = false;
-      }
-    });
+    // Pour l'instant, fermons simplement le modal
+    this.closeModal();
   }
+
+
 }
