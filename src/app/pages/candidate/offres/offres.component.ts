@@ -1,17 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Router} from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../../auth/auth.service';
+import { OffreService } from '../../../core/offre/offre.service';
+import {TruncatePipe} from '../../../shared/pipes/truncate.pipe';
 
 interface Offre {
   id: number;
-  title: string;
-  company: string;
+  posteTitre: string;
   description: string;
-  location: string;
-  postedDate: string;
-  salary?: string;
-  type: string;
-  logo?: string;
+  localisation: string;
+  datePublication: string;
+  typeOffre: string;
+  dureeMois?: number;
+  secteurActivite?: string;
+  nomEntreprise?: string;
+  status: string; // Ajouté pour la cohérence avec offres-list
 }
 
 @Component({
@@ -19,70 +26,10 @@ interface Offre {
   templateUrl: './offres.component.html',
   standalone: true,
   styleUrls: ['./offres.component.css'],
-  imports: [CommonModule, ]
+  imports: [CommonModule, FormsModule, TruncatePipe]
 })
 export class OffresComponent implements OnInit {
-  offres: Offre[] = [
-    {
-      id: 1,
-      title: 'Développeur Frontend Angular',
-      company: 'TechNova',
-      description: 'Créer des interfaces web modernes et dynamiques avec Angular et TypeScript. Expérience minimale de 2 ans requise.',
-      location: 'Casablanca',
-      postedDate: '2025-03-12',
-      salary: '12 000 - 16 000 MAD',
-      type: 'CDI'
-    },
-    {
-      id: 2,
-      title: 'Data Scientist',
-      company: 'SmartData',
-      description: 'Analyser les données pour aider à la prise de décision. Compétences en Python, R et ML requises.',
-      location: 'Rabat',
-      postedDate: '2025-03-15',
-      salary: '15 000 - 20 000 MAD',
-      type: 'CDI'
-    },
-    {
-      id: 3,
-      title: 'Développeur Full-Stack',
-      company: 'WebSolution',
-      description: 'Développement d\'applications web complètes utilisant React et Node.js. Connaissance de MongoDB appréciée.',
-      location: 'Tanger',
-      postedDate: '2025-03-18',
-      type: 'Freelance'
-    },
-    {
-      id: 4,
-      title: 'UX/UI Designer',
-      company: 'CreativeTech',
-      description: 'Concevoir des interfaces utilisateur intuitives et esthétiques. Maîtrise de Figma et Adobe XD requise.',
-      location: 'Casablanca',
-      postedDate: '2025-03-20',
-      salary: '10 000 - 14 000 MAD',
-      type: 'CDI'
-    },
-    {
-      id: 5,
-      title: 'DevOps Engineer',
-      company: 'CloudMasters',
-      description: 'Mettre en place et gérer l\'infrastructure cloud. Expérience avec AWS, Docker et Kubernetes nécessaire.',
-      location: 'Marrakech',
-      postedDate: '2025-03-22',
-      salary: '18 000 - 22 000 MAD',
-      type: 'CDI'
-    },
-    {
-      id: 6,
-      title: 'Mobile Developer (Flutter)',
-      company: 'AppGenius',
-      description: 'Développer des applications mobiles cross-platform avec Flutter. Connaissance de Dart et du développement mobile requise.',
-      location: 'Rabat',
-      postedDate: '2025-03-25',
-      type: 'CDD - 6 mois'
-    }
-  ];
-
+  offres: Offre[] = [];
   filteredOffres: Offre[] = [];
   searchTerm: string = '';
   selectedLocation: string = '';
@@ -91,49 +38,98 @@ export class OffresComponent implements OnInit {
 
   showApplyModal: boolean = false;
   currentOffre: Offre | null = null;
+  isLoading: boolean = false;
 
-  constructor(private router: Router, ) {}
-
-
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private authService: AuthService,
+    private offreService: OffreService
+  ) {}
 
   ngOnInit(): void {
-    // Initialiser les offres filtrées avec toutes les offres
-    this.filteredOffres = [...this.offres];
-    console.log('Offres chargées:', this.offres.length);
+    if (!this.authService.hasRole('CANDIDATE')) {
+      this.router.navigate(['/unauthorized']);
+      return;
+    }
+    this.loadOffres();
   }
 
-  // Méthodes pour filtrer les offres (à implémenter plus tard)
+  loadOffres(): void {
+    this.isLoading = true;
+    this.offreService.getOffresForCandidat().subscribe({
+      next: (offres: any[]) => {
+        this.offres = offres.map(offre => ({
+          ...offre,
+          typeOffre: offre.typeOffre || 'Inconnu'
+        })) as Offre[];
+        this.filteredOffres = [...this.offres];
+        this.isLoading = false;
+      },
+    });
+  }
+
+  // Méthodes de statut (comme dans offres-list)
+  getStatusLabel(status: string): string {
+    switch (status) {
+      case 'active': return 'Active';
+      case 'draft': return 'Brouillon';
+      case 'closed': return 'Clôturée';
+      default: return status;
+    }
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'active': return 'status-active';
+      case 'draft': return 'status-draft';
+      case 'closed': return 'status-closed';
+      default: return '';
+    }
+  }
+
   filterOffres(): void {
-    // Cette méthode sera utilisée pour filtrer les offres selon les critères
     this.filteredOffres = this.offres.filter(offre => {
       const matchesSearch = this.searchTerm ?
-        offre.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        offre.posteTitre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         offre.description.toLowerCase().includes(this.searchTerm.toLowerCase()) :
         true;
 
       const matchesLocation = this.selectedLocation ?
-        offre.location === this.selectedLocation :
+        offre.localisation === this.selectedLocation :
         true;
 
-      // Ajoutez d'autres critères de filtrage selon vos besoins
+      const matchesSector = this.selectedSector ?
+        offre.secteurActivite === this.selectedSector :
+        true;
 
-      return matchesSearch && matchesLocation;
+      return matchesSearch && matchesLocation && matchesSector;
     });
   }
 
-  // Formater la date au format plus lisible
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  getUniqueLocations(): string[] {
+    const locations = new Set<string>();
+    this.offres.forEach(offre => locations.add(offre.localisation));
+    return Array.from(locations);
   }
 
-  // Nouvelles méthodes pour le modal
+  getUniqueSectors(): string[] {
+    const sectors = new Set<string>();
+    this.offres.forEach(offre => {
+      if (offre.secteurActivite) {
+        sectors.add(offre.secteurActivite);
+      }
+    });
+    return Array.from(sectors);
+  }
+
   openApplyModal(offre: Offre): void {
     this.currentOffre = offre;
     this.showApplyModal = true;
   }
 
-  closeModal(): void {
+  closeApplyModal(): void {
     this.showApplyModal = false;
     this.currentOffre = null;
   }
@@ -148,29 +144,28 @@ export class OffresComponent implements OnInit {
     this.showUploadModal = false;
     this.selectedFile = null;
   }
+  submitApplication(): void {
+    if (!this.currentOffre) return;
 
-  onFileChange(event: any) {
-    this.selectedFile = event.target.files[0];
-  }
-  onSubmit() {
-    if (this.selectedFile) {
-      // Logique pour envoyer le fichier au backend
-      console.log('Fichier sélectionné:', this.selectedFile);
-      // Par exemple, envoi via un service HTTP.
-    }
-  }
-  selectApplyMethod(method: 'form' | 'upload'): void {
-    console.log(`Méthode de candidature sélectionnée: ${method}`);
-    console.log(`Candidature pour le poste: ${this.currentOffre?.title}`);
-    // Ici, vous pouvez ajouter la logique pour chaque méthode de candidature
-
-    if (method === 'form') {
-      this.router.navigate(['/formulaire-candidature']);
-    }else if (method === 'upload') {
-      this.showUploadModal = true; // et on ouvre celui de l'upload
-    }
-    // Pour l'instant, fermons simplement le modal
-    //this.closeModal();
-    this.selectedMethod = method;
+    this.isLoading = true;
+    this.http.post(`/api/v1/candidatures`, {
+      offreId: this.currentOffre.id,
+      status: 'PENDING'
+    }).subscribe({
+      next: () => {
+        this.snackBar.open('Candidature envoyée avec succès', 'Fermer', {
+          duration: 3000
+        });
+        this.closeApplyModal();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la candidature', err);
+        this.snackBar.open('Erreur lors de la candidature', 'Fermer', {
+          duration: 3000
+        });
+        this.isLoading = false;
+      }
+    });
   }
 }

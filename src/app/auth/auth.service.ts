@@ -93,7 +93,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return localStorage.getItem('auth-token');
   }
 
   hasRole(requiredRole: string): boolean {
@@ -110,4 +110,7 @@ export class AuthService {
   getMe(): Observable<any> {
     return this.http.get(`${this.apiUrl}/me`);
   }
+
+
+
 }

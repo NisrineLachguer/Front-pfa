@@ -1,0 +1,162 @@
+/* offres-list.component.css */
+.offres-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.btn-add {
+  background: linear-gradient(90deg, #2b68a7 0%, #6151b8 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.offres-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.offre-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.offre-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  background: #f5f7fa;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e1e5eb;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-draft {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-closed {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.entreprise {
+  font-weight: 600;
+  color: #2b68a7;
+  margin: 0 0 10px 0;
+}
+
+.localisation, .date {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.description {
+  color: #333;
+  margin: 10px 0;
+  line-height: 1.4;
+}
+
+.card-actions {
+  display: flex;
+  border-top: 1px solid #e1e5eb;
+  padding: 10px;
+}
+
+.btn-action {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.btn-action:hover {
+  color: #2b68a7;
+  background: #f5f7fa;
+}
+
+.no-offres {
+  text-align: center;
+  padding: 40px;
+  grid-column: 1 / -1;
+}
+
+.no-offres p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Truncate pipe (ajoutez-le dans votre module) */
+.truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
