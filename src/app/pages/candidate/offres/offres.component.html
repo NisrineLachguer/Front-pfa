@@ -45,22 +45,37 @@
       </div>
       <div class="card-body">
         <p class="job-description">{{ offre.description | truncate:150 }}</p>
-        <div class="job-info">
-          <div class="job-stat">
-            <i class="fas fa-building stat-icon"></i>
-            <span>{{ offre.secteurActivite }}</span>
+        <div class="job-details">
+          <div class="job-detail-row">
+            <div class="job-detail-item">
+              <div class="detail-icon">
+                <i class="fas fa-building"></i>
+              </div>
+              <div class="detail-text">{{ offre.secteurActivite }}</div>
+            </div>
+            <div class="job-detail-item">
+              <div class="detail-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="detail-text">{{ offre.localisation }}</div>
+            </div>
           </div>
-          <div class="job-stat">
-            <i class="fas fa-map-marker-alt stat-icon"></i>
-            <span>{{ offre.localisation }}</span>
-          </div>
-          <div class="job-stat">
-            <i class="fas fa-briefcase stat-icon"></i>
-            <span>{{ offre.typeOffre }} {{ offre.dureeMois ? '(' + offre.dureeMois + ' mois)' : '' }}</span>
-          </div>
-          <div class="job-stat">
-            <i class="far fa-calendar-alt stat-icon"></i>
-            <span>Publiée le {{ offre.datePublication | date:'dd/MM/yyyy' }}</span>
+          <div class="job-detail-row">
+            <div class="job-detail-item">
+              <div class="detail-icon">
+                <i class="fas fa-briefcase"></i>
+              </div>
+              <div class="detail-text">
+                <span class="contract-type">{{ offre.typeOffre }}</span>
+                <span class="contract-duration" *ngIf="offre.dureeMois">({{ offre.dureeMois }} mois)</span>
+              </div>
+            </div>
+            <div class="job-detail-item">
+              <div class="detail-icon">
+                <i class="far fa-calendar-alt"></i>
+              </div>
+              <div class="detail-text">Publiée le {{ offre.datePublication | date:'dd/MM/yyyy' }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -109,9 +124,28 @@
             <p>Téléchargez directement votre CV</p>
           </div>
         </div>
+        <!--         Modal Upload CV -->
+        <div class="upload-modal" [class.modal-visible]="showUploadModal">
+          <div class="upload-modal-content">
+            <div class="upload-modal-header">
+              <h3>Uploader votre CV</h3>
+              <button class="close-upload-button" (click)="closeUploadModal()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="upload-modal-body">
+              <form (submit)="uploadCv($event)">
+                <div class="upload-form-group">
+                  <label for="cvFile" class="upload-form-label">Choisissez un fichier PDF :</label>
+                  <input type="file" id="cvFile"  class="upload-file-input" (change)="handleFileInput($event)" />
+                  <small class="upload-file-info">Veuillez télécharger un fichier au format PDF.</small>
+                </div>
+                <button type="submit" class="upload-submit-button">Envoyer</button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-

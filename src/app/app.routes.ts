@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { LandingComponent } from './landing/landing.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { RecruiterComponent } from './pages/recruiter/recruiter.component';
 import { CandidateComponent } from './pages/candidate/candidate.component';
@@ -12,9 +11,6 @@ import {OffresComponent} from './pages/candidate/offres/offres.component';
 import {CandidaturesComponent} from './pages/candidate/candidatures/candidatures.component';
 import {ProfilComponent} from './pages/candidate/profil/profil.component';
 import {ApplicationFormComponent} from './pages/candidate/application-form/application-form.component';
-
-import {OffresRecruteurComponent} from './pages/recruiter/offres-recruteur/offres-recruteur.component';
-//import {OffresListComponent} from './pages/recruiter/offres-list/offres-list.component';
 import {CreateOffreComponent} from './pages/recruiter/create-offre/create-offre.component';
 import {OffresListComponent} from './pages/recruiter/offres-list/offres-list.component';
 

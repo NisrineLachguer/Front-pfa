@@ -647,3 +647,99 @@
   color: #666;
   font-size: 14px;
 }
+/* Styles pour les détails des jobs */
+.job-details {
+  margin-top: 15px;
+}
+
+.job-detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.job-detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.job-detail-item {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #f2f0ff;
+  margin-right: 10px;
+  color: #6151b8;
+}
+
+.detail-icon i {
+  font-size: 14px;
+}
+
+.detail-text {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Styles spécifiques pour le type de contrat et la durée */
+.contract-type {
+  font-weight: 500;
+  color: #555;
+}
+
+.contract-duration {
+  color: #777;
+  margin-left: 5px;
+  font-size: 13px;
+}
+
+/* Styles pour les badges de statut (déjà existants mais maintenant adaptés) */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-draft {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-closed {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Ajustements responsifs pour les détails du job */
+@media (max-width: 576px) {
+  .job-detail-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .job-detail-item {
+    width: 100%;
+  }
+}

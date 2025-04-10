@@ -18,7 +18,7 @@ interface Offre {
   dureeMois?: number;
   secteurActivite?: string;
   nomEntreprise?: string;
-  status: string; // Ajouté pour la cohérence avec offres-list
+  status: string;
 }
 
 @Component({
@@ -128,6 +128,10 @@ export class OffresComponent implements OnInit {
     this.showApplyModal = true;
   }
 
+  closeUploadModal() {
+    this.showUploadModal = false;
+    this.selectedFile = null;
+  }
   closeModal(): void {
     this.showApplyModal = false;
     this.currentOffre = null;
@@ -143,8 +147,29 @@ export class OffresComponent implements OnInit {
     console.log(`Méthode de candidature sélectionnée: ${method}`);
     console.log(`Candidature pour le poste: ${this.currentOffre?.posteTitre}`);
     // Ici, vous pouvez ajouter la logique pour chaque méthode de candidature
-
-    // Pour l'instant, fermons simplement le modal
-    this.closeModal();
+    if (method === 'form') {
+      this.router.navigate(['formulaire-candidature']); // Redirection vers le formulaire
+    } else if (method === 'upload') {
+      this.showUploadModal = true;
+    }
+    this.selectedMethod = method;
   }
+  handleFileInput(event: any) {
+    this.selectedFile = event.target.files[0];
+    console.log('Fichier sélectionné :', this.selectedFile);
+  }
+
+  uploadCv(event: Event) {
+    event.preventDefault(); // Empêche le rechargement de la page
+
+    if (!this.selectedFile) {
+      alert('Veuillez sélectionner un fichier avant de l’envoyer.');
+      return;
+    }
+    console.log('Fichier sélectionné :', this.selectedFile);
+    this.showUploadModal = false;
+    this.selectedFile = null;
+    this.selectedMethod = null;
+  }
+
 }
