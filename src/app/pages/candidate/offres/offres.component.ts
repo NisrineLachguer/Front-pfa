@@ -148,7 +148,15 @@ export class OffresComponent implements OnInit {
     console.log(`Candidature pour le poste: ${this.currentOffre?.posteTitre}`);
     // Ici, vous pouvez ajouter la logique pour chaque méthode de candidature
     if (method === 'form') {
-      this.router.navigate(['formulaire-candidature']); // Redirection vers le formulaire
+      if (this.currentOffre && this.currentOffre.id) {
+        console.log('Navigation vers le formulaire avec ID:', this.currentOffre.id);
+        this.router.navigate(['formulaire-candidature', this.currentOffre.id]);
+      } else {
+        console.error('Erreur: Aucun ID d\'offre disponible pour la navigation');
+        this.snackBar.open('Erreur: Impossible d\'accéder au formulaire de candidature', 'Fermer', {
+          duration: 3000
+        });
+      }
     } else if (method === 'upload') {
       this.showUploadModal = true;
     }

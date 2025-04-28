@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { CandidatureAnalysis} from '../../../shared/model/condidature/candidature-analysis.model';
 
 @Component({
   selector: 'app-application-form',
@@ -20,14 +22,27 @@ export class ApplicationFormComponent implements OnInit {
   isSubmitting = false;
   submitted = false;
   success = false;
+  offreId: number | null = null;
+  analysis: CandidatureAnalysis | null = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(private fb: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.initForm();
+    // Récupérer l'ID de l'offre depuis l'URL
+    this.route.params.subscribe(params => {
+      this.offreId = params['id'] ? Number(params['id']) : null;
+      console.log('ID de l\'offre récupéré :', this.offreId);
+
+      // Vérifier si l'offreId est valide
+      if (!this.offreId || isNaN(this.offreId)) {
+        console.error('Erreur: offreId invalide ou non défini', this.offreId);
+      }
+      this.initForm();
+    });
   }
 
   initForm(): void {
+    console.log('Initialisation du formulaire avec offreId:', this.offreId);
     this.applicationForm = this.fb.group({
       nom: ['', [Validators.required, Validators.minLength(2)]],
       prenom: ['', [Validators.required, Validators.minLength(2)]],
@@ -37,7 +52,8 @@ export class ApplicationFormComponent implements OnInit {
       formation: [''],
       competences: [''],
       motivation: [''],
-      disponibilite: ['']
+      disponibilite: [''],
+      offreId: [this.offreId,  Validators.required]
     });
   }
 
@@ -49,6 +65,7 @@ export class ApplicationFormComponent implements OnInit {
   resetForm(): void {
     this.applicationForm.reset();
     this.submitted = false;
+    this.analysis = null;
   }
 
   onSubmit(): void {
@@ -65,21 +82,56 @@ export class ApplicationFormComponent implements OnInit {
     this.submitted = true;
     const formData = this.applicationForm.value;
 
-    this.http.post('http://localhost:8080/api/candidature/apply', formData)
-      .pipe(
-        finalize(() => {
-          this.isSubmitting = false;
-        })
-      )
+    // Vérifier explicitement si offreId est présent et valide
+    if (!formData.offreId || isNaN(formData.offreId)) {
+      console.error('ERREUR: offreId invalide ou manquant', formData.offreId);
+      this.isSubmitting = false;
+      this.success = false;
+      alert('Erreur: ID de l\'offre invalide. Veuillez réessayer ou contacter le support.');
+      return;
+    }
+
+    console.log('Données du formulaire à envoyer:', JSON.stringify(formData));
+
+   /* this.http.post('http://localhost:8080/api/candidature/apply', formData, {
+      //headers: { 'Content-Type': 'application/json' }
+      //responseType: 'text'
+    })
+      .pipe(finalize(() => this.isSubmitting = false))
       .subscribe({
-        next: () => {
+        next: (response) => {
+          console.log('Réponse du serveur:', response);
           this.success = true;
-          // Optionnel: reset form après succès
-          // this.resetForm();
+
+          //Traiter l'analyse si elle est présente
+          if (response.analysis) {
+            this.analysis = response.analysis;
+          }
+        },*/
+    this.http.post('http://localhost:8080/api/candidature/apply', formData)
+      .pipe(finalize(() => this.isSubmitting = false))
+      .subscribe({
+        next: (response: any) => {
+          console.log('Réponse du serveur:', response);
+          this.success = true;
+
+          // Traiter l'analyse si elle est présente
+          if (response.analysis) {
+            this.analysis = response.analysis;
+          }
         },
         error: (error) => {
           this.success = false;
           console.error('Erreur lors de l\'envoi du formulaire:', error);
+          let errorMessage = 'Erreur inconnue';
+          if (error.error && typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+
+          console.error('Détails de l\'erreur:', errorMessage);
+          alert('Erreur lors de l\'envoi: ' + errorMessage);
         }
       });
   }

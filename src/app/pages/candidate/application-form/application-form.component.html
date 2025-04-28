@@ -9,7 +9,30 @@
     <p>❌ Une erreur s'est produite lors de l'envoi de votre candidature. Veuillez réessayer.</p>
   </div>
 
+  <!--*****************************-->
+  <!-- Affichage des résultats d'analyse AI -->
+  <div *ngIf="analysis" class="analysis-container">
+    <h3>Analyse de votre candidature par IA</h3>
+    <div class="analysis-result" [ngClass]="{'accepted': analysis.accepted, 'rejected': !analysis.accepted}">
+      <div class="match-percentage">
+        <span class="percentage-label">Taux de correspondance:</span>
+        <span class="percentage-value">{{ analysis.matchPercentage }}</span>
+      </div>
+      <div class="status-indicator">
+        <span *ngIf="analysis.accepted" class="status accepted">✓ Profil compatible</span>
+        <span *ngIf="!analysis.accepted" class="status rejected">✗ Profil peu compatible</span>
+      </div>
+      <div class="analysis-details">
+        <p>{{ analysis.analysis }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!--*****************************-->
+
   <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()">
+    <!-- Champ caché pour l'offreId -->
+    <input type="hidden" formControlName="offreId">
     <div class="form-section">
       <h3>Informations personnelles</h3>
 

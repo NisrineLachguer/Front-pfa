@@ -80,6 +80,11 @@ export const routes: Routes = [
     path: 'formulaire-candidature',
     component: ApplicationFormComponent
   },
+  { path: 'formulaire-candidature/:id', component: ApplicationFormComponent },
+  {
+    path: 'offers/:id/candidature',
+    component: ApplicationFormComponent
+  },
 
   {
     path: '**',
