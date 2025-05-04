@@ -56,7 +56,7 @@ export class OffresComponent implements OnInit {
 
   loadOffres(): void {
     this.isLoading = true;
-    this.offreService.getOffresForCandidat().subscribe({
+    this.offreService.getActiveRecruitmentOffres().subscribe({
       next: (offres: any[]) => {
         this.offres = offres.map(offre => ({
           ...offre,

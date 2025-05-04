@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import {map, Observable} from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 
 
@@ -38,7 +38,6 @@ export class OffreService {
     );
   }
 
-
   createOffre(offreData: any): Observable<any> {
     return this.http.post(
       `${this.apiUrl}/`,
@@ -54,12 +53,22 @@ export class OffreService {
     );
   }
 
-  // Dans offre.service.ts
   getOffresForCandidat(): Observable<Offre[]> {
     return this.http.get<Offre[]>(`${this.apiUrl}/`, {
       headers: this.getAuthHeaders()
     });
   }
+
+  getActiveRecruitmentOffres(): Observable<Offre[]> {
+    return this.http.get<Offre[]>(`${this.apiUrl}/`, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      map((offres: Offre[]) => offres.filter(offre =>
+        offre.status === 'active'
+      ))
+    );
+  }
+
   getOffre(id: number): Observable<any> {
     return this.http.get(
       `${this.apiUrl}/${id}`,

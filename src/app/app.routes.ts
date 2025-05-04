@@ -13,6 +13,7 @@ import {ProfilComponent} from './pages/candidate/profil/profil.component';
 import {ApplicationFormComponent} from './pages/candidate/application-form/application-form.component';
 import {CreateOffreComponent} from './pages/recruiter/create-offre/create-offre.component';
 import {OffresListComponent} from './pages/recruiter/offres-list/offres-list.component';
+import {CandidaturesRecuesComponent} from './pages/recruiter/candidatures-recues/candidatures-recues.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -45,7 +46,8 @@ export const routes: Routes = [
     data: { role: 'RECRUITER' },
     children: [
       { path: 'offres', component: OffresListComponent },
-      { path: 'offres/nouvelle', component: CreateOffreComponent }
+      { path: 'offres/nouvelle', component: CreateOffreComponent },
+      { path: 'candidatures', component: CandidaturesRecuesComponent }
     ]
   },
   {
