@@ -2,34 +2,52 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { CandidatureService} from '../../../shared/service/candidature/candidature.service';
+import { AuthService } from '../../../auth/auth.service';
 
-interface Candidat {
+// Interfaces alignées avec les DTOs du backend
+interface CandidatureDto {
   id: number;
+  candidatId: number;
+  offreId: number;
+  statut: string; // "en attente", "validée", "rejetée"
+  dateCandidature: Date;
   nom: string;
   prenom: string;
   email: string;
-  telephone?: string;
-  cv?: string;
-  photoUrl?: string;
+  telephone: string;
+  formation: string;
+  experience: string;
+  competences: string;
+  motivation: string;
+  disponibilite: string;
+  offreTitre: string; // Titre de l'offre associée
+  // Autres propriétés dynamiques pour l'affichage
+  offre?: {
+    id: number;
+    posteTitre: string;
+    description: string;
+    localisation: string;
+    datePublication: Date;
+    nomEntreprise: string;
+    secteurActivite: string;
+  };
 }
 
 interface Offre {
   id: number;
-  titre: string;
-  entreprise: string;
+  posteTitre: string;
   description: string;
   localisation: string;
   datePublication: Date;
+  nomEntreprise: string;
+  secteurActivite: string;
+  typeOffre: string;
+  dureeMois?: number;
+  status: string;
 }
 
-interface Candidature {
-  id: number;
-  candidat: Candidat;
-  offre: Offre;
-  dateCandidature: Date;
-  statut: string; // "en attente", "validée", "rejetée"
-}
 
 @Component({
   selector: 'app-candidatures',
@@ -39,106 +57,58 @@ interface Candidature {
   styleUrl: './candidatures.component.css'
 })
 export class CandidaturesComponent implements OnInit {
-  candidatures: Candidature[] = [];
-  filteredCandidatures: Candidature[] = [];
+  candidatures: CandidatureDto[] = [];
+  filteredCandidatures: CandidatureDto[] = [];
   loading = true;
   error = '';
+  selectedCandidature: CandidatureDto | null = null;
+  showDetailsModal = false;
 
   // Variables de filtrage et recherche
   searchTerm = '';
   statusFilter = 'tous';
   dateFilter = 'tous';
 
-  constructor() { }
+  constructor(
+    private candidatureService: CandidatureService,
+    private authService: AuthService,
+    private http: HttpClient,
+  ) { }
 
   ngOnInit(): void {
-    // Simuler des données pour la démonstration
-    // Dans une application réelle, vous utiliseriez un service pour charger les données
-    this.simulateDataFetch();
-  }
-
-  simulateDataFetch(): void {
-    // Données fictives pour la démonstration
-    setTimeout(() => {
-      this.candidatures = [
-        {
-          id: 1,
-          candidat: {
-            id: 101,
-            nom: 'Dupont',
-            prenom: 'Jean',
-            email: 'jean.dupont@example.com'
-          },
-          offre: {
-            id: 201,
-            titre: 'Développeur Frontend Angular',
-            entreprise: 'Tech Solutions',
-            description: 'Poste de développeur frontend spécialisé en Angular',
-            localisation: 'Paris',
-            datePublication: new Date('2025-03-15')
-          },
-          dateCandidature: new Date('2025-03-20'),
-          statut: 'en attente'
-        },
-        {
-          id: 2,
-          candidat: {
-            id: 101,
-            nom: 'Dupont',
-            prenom: 'Jean',
-            email: 'jean.dupont@example.com'
-          },
-          offre: {
-            id: 202,
-            titre: 'Développeur Backend Java',
-            entreprise: 'InnoSoft',
-            description: 'Développement d\'applications backend en Java',
-            localisation: 'Lyon',
-            datePublication: new Date('2025-03-10')
-          },
-          dateCandidature: new Date('2025-03-12'),
-          statut: 'validée'
-        },
-        {
-          id: 3,
-          candidat: {
-            id: 101,
-            nom: 'Dupont',
-            prenom: 'Jean',
-            email: 'jean.dupont@example.com'
-          },
-          offre: {
-            id: 203,
-            titre: 'Architecte Solution',
-            entreprise: 'Global Systems',
-            description: 'Conception d\'architectures pour applications d\'entreprise',
-            localisation: 'Bordeaux',
-            datePublication: new Date('2025-02-28')
-          },
-          dateCandidature: new Date('2025-03-01'),
-          statut: 'rejetée'
-        }
-      ];
-
-      this.applyFilters();
-      this.loading = false;
-    }, 1000);
+    this.loadCandidatures()
   }
 
   loadCandidatures(): void {
-    // Dans une application réelle, vous feriez appel à un service
-    // Exemple:
-    // this.candidatureService.getCandidaturesByCandidat(userId).subscribe({
-    //   next: (data) => {
-    //     this.candidatures = data;
-    //     this.applyFilters();
-    //     this.loading = false;
-    //   },
-    //   error: (err) => {
-    //     this.error = 'Erreur lors du chargement des candidatures';
-    //     this.loading = false;
-    //   }
-    // });
+    this.loading = true;
+    this.error = '';
+
+    this.candidatureService.getMesCandidatures().subscribe({
+      next: (data) => {
+        console.log('Candidatures chargées:', data);
+        // Transformation des données reçues pour l'affichage
+        this.candidatures = data.map((item: any) => {
+          // Création d'une structure compatible avec le template
+          return {
+            ...item,
+            offre: {
+              id: item.offreId,
+              posteTitre: item.offreTitre || 'Sans titre',
+              // Utilisez les champs directement depuis l'item ou des valeurs par défaut
+              localisation: item.localisation || 'Non spécifiée',
+              nomEntreprise: item.nomEntreprise || 'Entreprise'
+            }
+          };
+        });
+        this.applyFilters();
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Erreur de chargement des candidatures', err);
+        this.error = 'Erreur lors du chargement des candidatures';
+        this.loading = false;
+      }
+    });
   }
 
   applyFilters(): void {
@@ -148,8 +118,9 @@ export class CandidaturesComponent implements OnInit {
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase().trim();
       result = result.filter(c =>
-        c.offre.titre.toLowerCase().includes(term) ||
-        c.offre.entreprise.toLowerCase().includes(term)
+        (c.offreTitre?.toLowerCase().includes(term) ?? false) ||
+       (c.offre?.nomEntreprise?.toLowerCase().includes(term) ?? false) ||
+        (c.offre?.nomEntreprise?.toLowerCase().includes(term) ?? false)
       );
     }
 
@@ -194,7 +165,7 @@ export class CandidaturesComponent implements OnInit {
   }
 
   getStatusClass(statut: string): string {
-    switch (statut.toLowerCase()) {
+    /**switch (statut.toLowerCase()) {
       case 'en attente':
         return 'status-pending';
       case 'validée':
@@ -203,6 +174,15 @@ export class CandidaturesComponent implements OnInit {
         return 'status-rejected';
       default:
         return '';
+    }**/
+    switch (statut.toLowerCase()) {
+      case 'validée':
+        return 'status-badge status-validée';
+      case 'rejetée':
+        return 'status-badge status-rejetée';
+      case 'en attente':
+      default:
+        return 'status-badge status-en-attente';
     }
   }
 
@@ -211,13 +191,165 @@ export class CandidaturesComponent implements OnInit {
   }
 
   retirerCandidature(id: number): void {
-    // Dans une application réelle, appelez un service
-    // this.candidatureService.deleteCandidature(id).subscribe({...})
-
-    // Pour la démo, supprime simplement de l'array local
-    this.candidatures = this.candidatures.filter(c => c.id !== id);
-    this.applyFilters();
+    if (confirm('Êtes-vous sûr de vouloir retirer cette candidature ?')) {
+      this.candidatureService.deleteCandidature(id).subscribe({
+        next: () => {
+          this.candidatures = this.candidatures.filter(c => c.id !== id);
+          this.applyFilters();
+        },
+        error: (err) => {
+          console.error('Erreur lors du retrait de la candidature', err);
+          this.error = 'Erreur lors du retrait de la candidature';
+        }
+      });
+    }
   }
+
+  viewCandidatureDetails(candidature: CandidatureDto): void {
+    this.selectedCandidature = candidature;
+    this.showDetailsModal = true;
+    document.body.style.overflow = 'hidden'; // Empêche le défilement de la page derrière le modal
+
+    // l'animation
+    setTimeout(() => {
+      const modalElement = document.querySelector('.modal') as HTMLElement;
+      if (modalElement) {
+        modalElement.classList.add('show', 'animate');
+      }
+    }, 10);
+
+  }
+
+  //Ferme le modal des détails de candidature
+  closeDetailsModal(): void {
+    const modalElement = document.querySelector('.modal') as HTMLElement;
+    if (modalElement) {
+      modalElement.classList.remove('show');
+
+      // Attendez que l'animation de fermeture soit terminée
+      setTimeout(() => {
+        this.showDetailsModal = false;
+        this.selectedCandidature = null;
+        document.body.style.overflow = ''; // Restaure le défilement de la page
+      }, 300);
+    } else {
+      this.showDetailsModal = false;
+      this.selectedCandidature = null;
+      document.body.style.overflow = '';
+    }
+  }
+
+  downloadCandidatureCV(id: number): void {
+    this.candidatureService.downloadCV(id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `candidature_cv_${id}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      },
+      error: (err) => {
+        console.error('Erreur lors du téléchargement du CV', err);
+        this.error = 'Erreur lors du téléchargement du CV';
+      }
+    });
+  }
+
+  // Ajoutez ces propriétés à votre classe
+  showOffreDetailsModal = false;
+  selectedOffre: Offre | null = null;
+
+  /**
+   * Affiche le modal des détails de l'offre
+   */
+  viewOffreDetails(offreId: number): void {
+    // Fermez le modal de candidature s'il est ouvert
+    if (this.showDetailsModal) {
+      this.closeDetailsModal();
+      // Attendre la fermeture du premier modal avant d'ouvrir le second
+      setTimeout(() => {
+        this.loadOffreDetails(offreId);
+      }, 350);
+    } else {
+      this.loadOffreDetails(offreId);
+    }
+  }
+
+  /**
+   * Charge les détails de l'offre et affiche le modal
+   */
+  private loadOffreDetails(offreId: number): void {
+    this.loading = true;
+
+    // Appelez le service pour obtenir les détails de l'offre
+    this.http.get<Offre>(`http://localhost:8080/api/v1/offres/${offreId}`).subscribe({
+      next: (offre) => {
+        this.selectedOffre = offre;
+        this.showOffreDetailsModal = true;
+        this.loading = false;
+        document.body.style.overflow = 'hidden'; // Empêche le défilement de la page derrière le modal
+
+        // Ajoutez un petit délai pour l'animation
+        setTimeout(() => {
+          const modalElement = document.querySelector('.modal') as HTMLElement;
+          if (modalElement) {
+            modalElement.classList.add('show', 'animate');
+          }
+        }, 10);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des détails de l\'offre', err);
+        this.error = 'Erreur lors de la récupération des détails de l\'offre';
+        this.loading = false;
+      }
+    });
+  }
+
+
+  closeOffreDetailsModal(): void {
+    const modalElement = document.querySelector('.modal') as HTMLElement;
+    if (modalElement) {
+      modalElement.classList.remove('show');
+
+      // Attendez que l'animation de fermeture soit terminée
+      setTimeout(() => {
+        this.showOffreDetailsModal = false;
+        this.selectedOffre = null;
+        document.body.style.overflow = '';
+      }, 300);
+    } else {
+      this.showOffreDetailsModal = false;
+      this.selectedOffre = null;
+      document.body.style.overflow = '';
+    }
+  }
+
+  getOffreStatusLabel(status: string): string {
+    switch (status) {
+      case 'active': return 'Active';
+      case 'draft': return 'Brouillon';
+      case 'closed': return 'Clôturée';
+      default: return status;
+    }
+  }
+  getOffreStatusClass(status: string): string {
+    switch (status) {
+      case 'active':
+        return 'status-active';
+      case 'draft':
+        return 'status-draft';
+      case 'closed':
+        return 'status-closed';
+      default:
+        return '';
+    }
+  }
+
+
+
 
 
 }
