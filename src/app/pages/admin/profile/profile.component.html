@@ -1,0 +1,37 @@
+<div class="profile-container">
+    <!-- En-tête avec avatar et nom -->
+    <div class="header">
+        <div class="avatar">
+            <span>C</span>
+        </div>
+        <div class="user-info">
+            <h2>{{ user.name }}</h2>
+            <span class="tag">{{ user.role }}</span>
+        </div>
+    </div>
+
+    <!-- Section : Informations personnelles -->
+    <div class="section">
+        <h3>Informations personnelles</h3>
+        <div class="info-item">
+            <label>Nom d'utilisateur</label>
+            <input type="text" [(ngModel)]="user.username" />
+        </div>
+        <div class="info-item">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="user.email" />
+        </div>
+    </div>
+
+    <!-- Section : Coordonnées -->
+    <div class="section">
+        <h3>Coordonnées</h3>
+        <div class="info-item">
+            <label>Téléphone</label>
+            <input type="tel" [(ngModel)]="user.phone" />
+        </div>
+    </div>
+
+    <!-- Bouton de sauvegarde -->
+    <button mat-raised-button color="primary" (click)="saveChanges()">Sauvegarder les modifications</button>
+</div>

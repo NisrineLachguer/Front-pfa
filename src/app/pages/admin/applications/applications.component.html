@@ -1,0 +1,39 @@
+<div class="applications-container">
+  <h1>Mes Candidatures</h1>
+
+  <!-- Filtre par statut -->
+  <div class="filters">
+    <label for="statusFilter">Filtrer par statut :</label>
+    <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="filterApplications()">
+      <option value="">Tous</option>
+      <option value="En attente">En attente</option>
+      <option value="Acceptée">Acceptée</option>
+      <option value="Refusée">Refusée</option>
+    </select>
+  </div>
+
+  <!-- Aucune candidature trouvée -->
+  <div *ngIf="filteredApplications.length === 0" class="no-results">
+    Vous n'avez aucune candidature correspondant à ces critères.
+  </div>
+
+  <!-- Liste des candidatures -->
+  <div class="application-list">
+    <div *ngFor="let app of filteredApplications" class="application-card">
+      <div class="job-info">
+        <h3>{{ app.candidateName }}</h3>
+        <p><strong>Poste / Compétence :</strong> {{ app.jobTitle }}</p>
+        <p><strong>Entreprise :</strong> {{ app.company }}</p>
+        <p><strong>Date de candidature :</strong> {{ app.dateApplied | date:'mediumDate' }}</p>
+      </div>
+
+      <div class="status">
+        <span [class]="getStatusClass(app.status)">{{ app.status }}</span>
+      </div>
+
+      <div class="actions">
+        <button mat-button color="warn" (click)="cancelApplication(app)">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,208 @@
+/* Layout général */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f5fa;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #8d6fc1; /* violet WorkSpot */
+  color: white;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.welcome {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Sidebar */
+.content {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #ede9fe;
+  padding: 1rem;
+  border-right: 1px solid #ddd;
+}
+
+mat-nav-list a {
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+mat-nav-list a.active,
+mat-nav-list a:hover {
+  background-color: #d8b4fe;
+  color: #6b21a8;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Stats Cards */
+.stats-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  flex: 1 1 200px;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-icon {
+  background-color: #cfbbf3;
+  color: white;
+  padding: 0.8rem;
+  border-radius: 50%;
+  font-size: 1.5rem;
+}
+
+.stat-text {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.stat-title {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* Charts */
+.charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  flex: 1 1 45%;
+  border-radius: 12px;
+}
+
+/* Bottom Row */
+.bottom-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+/* Profile */
+.profile-card {
+  flex: 1 1 40%;
+  border-radius: 12px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  background-color: #c7aafa;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 1.4rem;
+}
+
+.role-badge {
+  background-color: #ede9fe;
+  color: #ad90dd;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* Profile details */
+.profile-details .detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #4b5563;
+  margin: 0.4rem 0;
+}
+
+/* Activities */
+.activities-card {
+  flex: 1 1 55%;
+  border-radius: 12px;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+.activity-item {
+  margin-bottom: 10px; /* Ajoute de l'espace vertical entre les éléments */
+}
+/* dashboard.component.css */
+.charts {
+  display: flex;
+  gap: 2rem;
+}
+
+.chart-container {
+  flex: 1;
+  min-width: 300px;
+}
+
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Styles spécifiques pour réduire la taille des graphiques */
+#revenueChart,
+#activityChart {
+  max-height: 300px; /* Réduit la hauteur à 300 pixels */
+  width: 100%; /* Maintient la largeur proportionnelle */
+}
+
+

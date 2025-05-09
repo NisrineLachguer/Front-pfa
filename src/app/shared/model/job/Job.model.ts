@@ -16,6 +16,7 @@ export class JobDto extends BaseDto{
   public company: CompanyDto ;
   public requirementJobs: Array<RequirementJobDto>;
   public skillJobs: Array<SkillJobDto>;
+  public id: string;
 
 
   constructor() {

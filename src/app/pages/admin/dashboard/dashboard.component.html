@@ -1,0 +1,61 @@
+<!-- dashboard.component.html -->
+
+<!-- Statistiques -->
+<section class="stats-grid">
+  <div class="stat-card mat-card">
+    <div class="stat-content">
+      <div class="stat-icon" style="background-color:#7e57c2"><mat-icon>group</mat-icon></div>
+      <div class="stat-text">
+        <div class="stat-value">320</div>
+        <div class="stat-title">Utilisateurs inscrits</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-card mat-card">
+    <div class="stat-content">
+      <div class="stat-icon" style="background-color:#42a5f5"><mat-icon>work</mat-icon></div>
+      <div class="stat-text">
+        <div class="stat-value">89</div>
+        <div class="stat-title">Offres actives</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-card mat-card">
+    <div class="stat-content">
+      <div class="stat-icon" style="background-color:#66bb6a"><mat-icon>assignment</mat-icon></div>
+      <div class="stat-text">
+        <div class="stat-value">145</div>
+        <div class="stat-title">Candidatures reçues</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Activités récentes -->
+<section class="activities-card mat-card">
+  <h3>Activité récente</h3>
+  <ul>
+    <li class="activity-item">Nouvel utilisateur inscrit - <span class="activity-time">il y a 15 min</span></li>
+    <li class="activity-item">Offre "Développeur Angular" publiée - <span class="activity-time">il y a 2h</span></li>
+    <li class="activity-item">Nouvelle candidature - <span class="activity-time">hier</span></li>
+  </ul>
+</section>
+
+<!-- Graphiques -->
+<div class="charts">
+  <div class="chart-container">
+    <h3>Revenue by Day</h3>
+    <canvas id="revenueChart"></canvas>
+  </div>
+  <div class="chart-container">
+    <h3>User Activity</h3>
+    <canvas id="activityChart"></canvas>
+  </div>
+</div>
+
+
+
+
+

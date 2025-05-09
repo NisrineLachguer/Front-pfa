@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { Chart, registerables } from 'chart.js';
 import {CommonModule, NgClass} from '@angular/common';
@@ -14,12 +14,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {SidebarComponent} from '../../components/sidebar/sidebar.component';
+import {HeaderComponent} from '../../components/header/header.component';
 
 @Component({
   selector: 'app-dashboard-admin',
   templateUrl: './admin.component.html',
   imports: [
-    NgClass,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -28,7 +29,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatCardModule,
     MatProgressBarModule,
     FontAwesomeModule,
-    CommonModule
+    CommonModule,
+    SidebarComponent,
+    RouterOutlet
   ],
   styleUrls: ['./admin.component.css']
 })
@@ -101,7 +104,7 @@ export class AdminComponent implements OnInit {
         datasets: [{
           label: 'Activity',
           data: [200, 300, 400, 500, 300, 200, 100],
-          backgroundColor: '#ff4081'
+          backgroundColor: '#5425cf'
         }]
       },
       options: {
@@ -117,4 +120,5 @@ export class AdminComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
 }

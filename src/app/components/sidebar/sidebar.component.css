@@ -1,0 +1,47 @@
+/* sidebar.component.css */
+
+/* Conteneur principal du sidebar */
+.sidebar {
+  width: 200px; /* Largeur du menu latéral */
+  background-color: #f9f9f9; /* Couleur de fond */
+  padding: 10px; /* Espacement interne */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère pour séparer le sidebar du reste de la page */
+}
+
+/* Titre du menu latéral */
+.sidebar h3 {
+  margin-bottom: 10px; /* Espace entre le titre et les liens */
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Liens du menu latéral */
+.sidebar ul {
+  list-style-type: none; /* Supprime les puces des liens */
+  padding: 0; /* Supprime l'indentation par défaut */
+  margin: 0; /* Supprime les marges par défaut */
+}
+
+.sidebar li {
+  margin: 5px 0; /* Espace vertical entre les liens */
+}
+
+.sidebar a {
+  display: block; /* Chaque lien occupe toute la largeur */
+  text-decoration: none; /* Supprime le soulignage des liens */
+  color: white; /* Couleur du texte */
+  background-color: #c7aafa; /* Couleur de fond pour les liens */
+  padding: 10px 15px; /* Espacement interne */
+  border-radius: 5px; /* Coins arrondis */
+  transition: background-color 0.3s ease; /* Effet de transition au survol */
+}
+
+.sidebar a:hover {
+  background-color: #846bac; /* Changement de couleur au survol */
+}
+
+/* Style optionnel : Activer le lien sélectionné */
+.sidebar a.active {
+  background-color: #bd99f6; /* Couleur active */
+}

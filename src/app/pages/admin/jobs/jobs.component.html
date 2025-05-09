@@ -1,0 +1,27 @@
+<div class="container">
+  <header>
+    <img src="assets/logo-cv.jpg" alt="Logo CV" class="logo" />
+    <h1>Offres d'emploi disponibles</h1>
+  </header>
+
+  <section class="filters">
+    <label>Villes</label>
+    <select [(ngModel)]="selectedCity" (change)="filterJobs()">
+      <option value="">Toutes les villes</option>
+      <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+    </select>
+  </section>
+
+  <section class="job-list">
+    <div *ngIf="filteredJobs.length === 0" class="no-results">
+      Aucune offre ne correspond à vos critères de recherche.
+    </div>
+    <div *ngFor="let job of filteredJobs" class="job-card">
+      <img [src]="job.imageUrl" alt="{{ job.title }}" class="job-image" />
+      <h2>{{ job.title }}</h2>
+      <p><strong>Entreprise :</strong> {{ job.company }}</p>
+      <p><strong>Lieu :</strong> {{ job.city }}</p>
+      <p><strong>Description :</strong> {{ job.description }}</p>
+    </div>
+  </section>
+</div>
