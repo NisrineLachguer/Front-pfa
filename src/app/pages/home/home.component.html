@@ -1,45 +1,145 @@
+<!-- Navbar -->
 <nav class="navbar">
-  <div class="navbar-container">
-    <div class="logo">
+  <div class="container">
+    <div class="navbar-logo">
       <a routerLink="/">
-        <h1>WorkSpot</h1>
+        <div class="logo-icon">CV</div>
+        <span class="logo-text">Work<span class="text-purple">Spot</span></span>
       </a>
     </div>
-    <div class="menu-toggle" (click)="toggleMobileMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
+    <div class="navbar-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+      <a routerLink="/jobs" routerLinkActive="active">Emplois</a>
+      <a routerLink="/companies" routerLinkActive="active">Entreprises</a>
+      <a routerLink="/contact" routerLinkActive="active">Contact</a>
     </div>
-    <ul class="nav-links" [class.active]="isMobileMenuOpen">
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Accueil</a></li>
-      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
-      <li><a routerLink="/login" routerLinkActive="active" class="signin-btn">Connexion</a></li>
-    </ul>
+    <div class="navbar-auth">
+      <button class="btn btn-primary" *ngIf="!authService.isAuthenticated()" routerLink="/login">Connexion</button>
+      <button class="btn btn-outline" *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Connexion</button>
+    </div>
+    <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+      <span class="menu-icon"></span>
+    </button>
   </div>
 </nav>
 
-<div class="home-container">
-  <header class="hero">
+<!-- Section principale -->
+<div class="hero-section fade-in">
+  <div class="container">
     <div class="hero-content">
-      <h1>WorkSpot
-        <br>L'emploi de vos rêves en un clic</h1>
-      <p>Trouvez l’emploi idéal ou recrutez les meilleurs talents en quelques clics. Votre carrière commence ici !.</p>
-      <div class="cta-buttons">
-        <button class="primary-btn" routerLink="/register" >Trouver un emploi</button>
-        <button class="secondary-btn" routerLink="/register">Poster un offre</button>
+      <h1 class="hero-title">WorkSpot</h1>
+      <h2 class="hero-subtitle">L'emploi de vos rêves en un clic</h2>
+      <p class="hero-description">
+        Trouvez l'emploi idéal ou recrutez les meilleurs talents en quelques clics.
+        Notre plateforme innovante connecte les candidats qualifiés avec des opportunités exceptionnelles.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary" routerLink="/jobs">Trouver un emploi</button>
+        <button class="btn btn-outline" *ngIf="authService.isAuthenticated()" routerLink="/post-job">Poster une offre</button>
+        <button class="btn btn-outline" *ngIf="!authService.isAuthenticated()" routerLink="/register">S'inscrire</button>
       </div>
     </div>
     <div class="hero-image">
-      <img src="./assets/logo-cv.jpg" alt="Expense Management">
+      <img src="assets/logo.png" alt="Image Hero" />
     </div>
-  </header>
+  </div>
 
-  <section class="features">
-    <div class="feature-grid">
-      <app-feature-section
-        *ngFor="let feature of features"
-        [feature]="feature">
-      </app-feature-section>
+  <!-- Badge Nouveau -->
+  <div class="new-badge">
+    <span>Nouveau</span>
+  </div>
+</div>
+
+<!-- Section Comment ça marche -->
+<div class="how-it-works-section fade-in">
+  <div class="container">
+    <h2 class="section-title">Comment ça marche</h2>
+    <p class="section-subtitle">Décrochez l'emploi de vos rêves en 4 étapes simples</p>
+
+    <div class="steps-container">
+      <div class="step-item" *ngFor="let step of steps">
+        <div class="step-number">{{ step.step }}</div>
+        <div class="step-content">
+          <h3 class="step-title">{{ step.title }}</h3>
+          <p class="step-description" *ngIf="step.description">{{ step.description }}</p>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</div>
+
+<!-- Section Nos services -->
+<div class="services-section fade-in">
+  <div class="container">
+    <h2 class="section-title">Nos services</h2>
+    <p class="section-subtitle">Des outils innovants pour propulser votre carrière</p>
+
+    <div class="services-grid">
+      <div class="service-card" *ngFor="let service of services">
+        <div class="service-icon" [ngClass]="service.gradient">
+          <i [class]="service.iconClass" style="color: white;"></i>
+        </div>
+        <h3 class="service-title">{{ service.title }}</h3>
+        <p class="service-description">{{ service.description }}</p>
+        <a href="#" class="service-link">En savoir plus</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Section Stats -->
+<div class="stats-section fade-in">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="counter" data-target="15000">0</div>
+        <p class="stat-label">Utilisateurs satisfaits</p>
+      </div>
+      <div class="stat-item">
+        <div class="counter" data-target="5000">0</div>
+        <p class="stat-label">Entreprises partenaires</p>
+      </div>
+      <div class="stat-item">
+        <div class="counter" data-target="25000">0</div>
+        <p class="stat-label">Offres d'emploi</p>
+      </div>
+      <div class="stat-item">
+        <div class="counter" data-target="95">0</div>
+        <p class="stat-label">% de réussite</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Témoignages -->
+<div class="testimonials-section fade-in">
+  <div class="container">
+    <h2 class="section-title">Ce que disent nos utilisateurs</h2>
+    <p class="section-subtitle">Découvrez les histoires de réussite de nos utilisateurs</p>
+
+    <div class="testimonial-slider">
+      <div class="testimonial-card" *ngFor="let testimonial of testimonials">
+        <div class="testimonial-content">
+          <p class="testimonial-message">"{{ testimonial.message }}"</p>
+        </div>
+        <div class="testimonial-author">
+          <p class="testimonial-name">{{ testimonial.name }}</p>
+          <p class="testimonial-position">{{ testimonial.position }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA Section -->
+<div class="cta-section fade-in">
+  <div class="container">
+    <div class="cta-content">
+      <h2 class="cta-title">Prêt à décrocher l'emploi de vos rêves?</h2>
+      <p class="cta-description">Inscrivez-vous gratuitement et commencez votre recherche d'emploi dès aujourd'hui.</p>
+      <button class="btn btn-primary" routerLink="/register" *ngIf="!authService.isAuthenticated()">Créer un compte</button>
+      <button class="btn btn-primary" routerLink="/jobs" *ngIf="authService.isAuthenticated()">Explorer les offres</button>
+    </div>
+  </div>
 </div>
